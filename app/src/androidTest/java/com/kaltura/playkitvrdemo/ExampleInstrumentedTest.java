@@ -1,4 +1,4 @@
-package com.kaltura.playkit.playkitvr;
+package com.kaltura.playkitvrdemo;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.kaltura.playkit.playkitvr", appContext.getPackageName());
+        assertEquals("com.kaltura.playkitvrdemo", appContext.getPackageName());
     }
 }

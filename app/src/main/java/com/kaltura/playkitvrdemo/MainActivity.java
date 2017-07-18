@@ -1,4 +1,4 @@
-package com.kaltura.playkit.playkitvr;
+package com.kaltura.playkitvrdemo;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.kaltura.playkit.playkitvr;
+package com.kaltura.playkitvrdemo;
 
 import org.junit.Test;
 
