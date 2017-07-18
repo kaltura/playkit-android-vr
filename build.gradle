@@ -15,6 +15,13 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven { url "https://jitpack.io" }
+        maven {
+            url 'https://finwe.bintray.com/orion360-sdk-public' // For Orion360 SDK
+        }
+        flatDir {
+            dirs '../aars'
+        }
     }
 }
 

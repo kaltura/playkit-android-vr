@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.kaltura.playkit.playkitvr">
+    package="com.kaltura.playkitvrdemo">
 
     <application
         android:allowBackup="true"
