@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">playkitvrdemo</string>
-    <string name="change_media_text">Change media</string>
-    <string name="play_text">Play</string>
-    <string name="pause_text">Pause</string>
-</resources>
