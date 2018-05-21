@@ -1,4 +1,4 @@
-include ':app', ':playkitvr'
+include ':playkitvr'
 
 
 include ':playkit-android'

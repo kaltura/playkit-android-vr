@@ -1,18 +1,18 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
 
     defaultConfig {
-        minSdkVersion 18
-        targetSdkVersion 25
+        minSdkVersion 16
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -22,26 +22,15 @@ android {
 }
 
 dependencies {
+    compile project(":playkit-android")
+    compile 'com.github.ashqal:MD360Player4Android:2.5.0'
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:26.1.0'
     testCompile 'junit:junit:4.12'
 
-    try {
-        compile project(":playkit-android");
-    } catch (UnknownProjectException ignored) {
-        compile 'com.kaltura.playkit:playkit:3.0.1'
-        exclude group: 'com.android.support', module: 'support-v4'
-    }
 
-    // Orion360 SDK (Pro) library.
-    compile 'fi.finwe.orion360:orion360-sdk-pro:3.1.02.000' // From Finwe maven repo at Bintray
-
-    // Debug version of FinweUtil enables debug logs from Orion360.
-    debugCompile 'fi.finwe.util:finwe-util:1.0.04-debug'  // From Finwe maven repo at Bintray
-
-    // Release version of FinweUtil should be used for all releases (no debug logs).
-    releaseCompile 'fi.finwe.util:finwe-util:1.0.04' // From Finwe maven repo at Bintray
 }
