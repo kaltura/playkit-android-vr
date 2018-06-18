@@ -19,7 +19,8 @@ import com.kaltura.playkit.player.PlayerEngine;
 import com.kaltura.playkit.player.PlayerView;
 import com.kaltura.playkit.player.metadata.PKMetadata;
 import com.kaltura.playkit.player.vr.VRInteractionMode;
-import com.kaltura.playkit.player.vr.VRParams;
+import com.kaltura.playkit.player.vr.VRSettings;
+import com.kaltura.playkit.utils.Consts;
 
 import java.util.List;
 
@@ -79,12 +80,12 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
 
     @Override
     public void load(PKMediaSourceConfig sourceConfig) {
-        VRParams vrParams = sourceConfig.getVrParams();
-        if (vrParams != null) {
-            maybeChangeDisplayMode(vrParams.isVrModeEnabled());
-            maybeChangeFlingConfiguration(vrParams.isFlingEnabled());
-            maybeChangeInteractionMode(vrParams.getInteractionMode());
-            maybeChangeZoomWithPinchConfiguration(vrParams.isZoomWithPinchEnabled());
+        VRSettings vrSettings = sourceConfig.getVrSettings();
+        if (vrSettings != null) {
+            maybeChangeDisplayMode(vrSettings.isVrModeEnabled());
+            maybeChangeFlingConfiguration(vrSettings.isFlingEnabled());
+            maybeChangeInteractionMode(vrSettings.getInteractionMode());
+            maybeChangeZoomWithPinchConfiguration(vrSettings.isZoomWithPinchEnabled());
         }
 
         player.load(sourceConfig);
@@ -223,6 +224,19 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
     }
 
     @Override
+    public void setPlaybackRate(float rate) {
+        player.setPlaybackRate(rate);
+    }
+
+    @Override
+    public float getPlaybackRate() {
+        if (player != null) {
+            return player.getPlaybackRate();
+        }
+        return Consts.DEFAULT_PLAYBACK_RATE_SPEED;
+    }
+
+    @Override
     public <T extends PKController> T getController(Class<T> type) {
         if (type == VRController.class && vrController != null) {
             return (T) vrController;
@@ -231,7 +245,7 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
     }
 
     @Override
-    public void onConfigurationChanged() {
+    public void onOrientationChanged() {
         vrLib.onOrientationChanged(context);
     }
 
@@ -295,7 +309,7 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
             return;
         }
 
-        if(vrLib.isPinchEnabled() != shouldEnable) {
+        if (vrLib.isPinchEnabled() != shouldEnable) {
             vrLib.setPinchEnabled(shouldEnable);
         }
     }
@@ -306,7 +320,7 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
             return;
         }
 
-        if(vrLib.isFlingEnabled() != shouldEnable) {
+        if (vrLib.isFlingEnabled() != shouldEnable) {
             vrLib.setFlingEnabled(shouldEnable);
         }
     }
@@ -317,11 +331,11 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
                 return MDVRLibrary.INTERACTIVE_MODE_MOTION;
             case Touch:
                 return MDVRLibrary.INTERACTIVE_MODE_TOUCH;
-            case Motion_with_touch:
+            case MotionWithTouch:
                 return MDVRLibrary.INTERACTIVE_MODE_MOTION_WITH_TOUCH;
-            case Cardboard_motion:
+            case CardboardMotion:
                 return MDVRLibrary.INTERACTIVE_MODE_CARDBORAD_MOTION;
-            case Cardboard_motion_with_touch:
+            case CardboardMotionWithTouch:
                 return MDVRLibrary.INTERACTIVE_MODE_CARDBORAD_MOTION_WITH_TOUCH;
             default:
                 return MDVRLibrary.INTERACTIVE_MODE_MOTION_WITH_TOUCH;

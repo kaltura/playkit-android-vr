@@ -44,7 +44,7 @@ public class VRView extends BaseExoplayerView {
     }
 
     @Override
-    public void swapVideoSurface(boolean useTextureView, boolean isSurfaceSecured) {
+    public void setVideoSurfaceProperties(boolean useTextureView, boolean isSurfaceSecured) {
 
     }
 
