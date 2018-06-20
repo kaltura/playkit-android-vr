@@ -1,6 +1,8 @@
 package com.kaltura.playkitvr;
 
 import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
@@ -60,9 +62,11 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
                 .ifNotSupport(new MDVRLibrary.INotSupportCallback() {
                     @Override
                     public void onNotSupport(int mode) {
-                        String tip = mode == MDVRLibrary.INTERACTIVE_MODE_MOTION_WITH_TOUCH
-                                ? "onNotSupport:MOTION" : "onNotSupport:" + String.valueOf(mode);
-                        Toast.makeText(context, tip, Toast.LENGTH_SHORT).show();
+                        if (BuildConfig.DEBUG) {
+                            throw new IllegalStateException("Selected mode " + String.valueOf(mode) + " is not supported by the device");
+                        }
+
+                        Toast.makeText(context, "Selected mode " + String.valueOf(mode) + " is not supported by the device", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .listenGesture(new MDVRLibrary.IGestureListener() {
@@ -259,6 +263,29 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
             @Override
             public void setOnClickListener(View.OnClickListener onClickListener) {
                 surfaceClickListener = onClickListener;
+            }
+
+            @Override
+            public boolean isModeSupported(VRInteractionMode mode) {
+                switch (mode) {
+                    case Touch:
+                        //Always supported
+                        return true;
+                    case Motion:
+                    case MotionWithTouch:
+                        SensorManager motionSensorManager = (SensorManager) context
+                                .getSystemService(Context.SENSOR_SERVICE);
+                        return motionSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) != null;
+                    case CardboardMotion:
+                    case CardboardMotionWithTouch:
+                        SensorManager cardboardSensorManager = (SensorManager) context
+                                .getSystemService(Context.SENSOR_SERVICE);
+                        Sensor accelerometerSensor = cardboardSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+                        Sensor gyroSensor = cardboardSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+                        return accelerometerSensor != null && gyroSensor != null;
+                    default:
+                        return true;
+                }
             }
 
             @Override
