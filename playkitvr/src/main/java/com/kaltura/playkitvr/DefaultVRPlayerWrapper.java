@@ -77,7 +77,6 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
                         }
                     }
                 })
-                .projectionFactory(new CustomProjectionFactory())
                 .barrelDistortionConfig(new BarrelDistortionConfig().setDefaultEnabled(false).setScale(0.95f))
                 .build(((VRView) player.getView()).getGlSurface());
     }
@@ -94,7 +93,6 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
 
         player.load(sourceConfig);
     }
-
 
     @Override
     public PlayerView getView() {
