@@ -1,0 +1,29 @@
+language: android
+dist: trusty
+sudo: required
+jdk:
+  - oraclejdk8
+android:
+  components:
+  - tools
+  - platform-tools
+  - extra-android-m2repository
+  - extra-google-m2repository
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+script:
+  - ./gradlew playkitvr:build
+after_failure:
+  - cat playkitvr/build/outputs/lint-results-debug.xml
+notifications:
+  email:
+    recipients:
+      - noam.tamim@kaltura.com
+      - gilad.nadav@kaltura.com
+      - Anton.Afanasiev@kaltura.com
+    on_success: change
+    on_failure: always
