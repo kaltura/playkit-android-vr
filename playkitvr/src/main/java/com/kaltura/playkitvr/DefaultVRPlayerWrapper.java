@@ -62,11 +62,12 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
                 .ifNotSupport(new MDVRLibrary.INotSupportCallback() {
                     @Override
                     public void onNotSupport(int mode) {
+                        String errorMessage = ("Selected mode " + String.valueOf(mode) + " is not supported by the device");
                         if (BuildConfig.DEBUG) {
-                            throw new IllegalStateException("Selected mode " + String.valueOf(mode) + " is not supported by the device");
+                            throw new IllegalStateException(errorMessage);
                         }
-
-                        Toast.makeText(context, "Selected mode " + String.valueOf(mode) + " is not supported by the device", Toast.LENGTH_SHORT).show();
+                        log.e(errorMessage);
+                        Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 })
                 .listenGesture(new MDVRLibrary.IGestureListener() {
@@ -323,6 +324,7 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
 
         int requestedDisplayMode = vrModeEnabled ? MDVRLibrary.DISPLAY_MODE_GLASS : MDVRLibrary.DISPLAY_MODE_NORMAL;
         int currentDisplayMode = vrLib.getDisplayMode();
+        vrLib.setAntiDistortionEnabled(requestedDisplayMode == MDVRLibrary.DISPLAY_MODE_GLASS);
         if (requestedDisplayMode != currentDisplayMode) {
             vrLib.switchDisplayMode(context, requestedDisplayMode);
         }
