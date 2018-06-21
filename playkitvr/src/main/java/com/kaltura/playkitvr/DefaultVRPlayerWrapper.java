@@ -324,8 +324,8 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
 
         int requestedDisplayMode = vrModeEnabled ? MDVRLibrary.DISPLAY_MODE_GLASS : MDVRLibrary.DISPLAY_MODE_NORMAL;
         int currentDisplayMode = vrLib.getDisplayMode();
-        vrLib.setAntiDistortionEnabled(requestedDisplayMode == MDVRLibrary.DISPLAY_MODE_GLASS);
         if (requestedDisplayMode != currentDisplayMode) {
+            vrLib.setAntiDistortionEnabled(requestedDisplayMode == MDVRLibrary.DISPLAY_MODE_GLASS);
             vrLib.switchDisplayMode(context, requestedDisplayMode);
         }
     }
