@@ -68,7 +68,7 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
                 .listenGesture(new MDVRLibrary.IGestureListener() {
                     @Override
                     public void onClick(MotionEvent e) {
-                        if(player == null || player.getView() == null) {
+                        if (player == null || player.getView() == null) {
                             return;
                         }
                         vrController.onSurfaceClicked(player.getView());
@@ -80,14 +80,7 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
 
     @Override
     public void load(PKMediaSourceConfig sourceConfig) {
-        VRSettings vrSettings = sourceConfig.getVrSettings();
-        if (vrSettings != null) {
-            vrController.enableVRMode(vrSettings.isVrModeEnabled());
-            vrController.setFlingEnabled(vrSettings.isFlingEnabled());
-            vrController.setInteractionMode(vrSettings.getInteractionMode());
-            vrController.setZoomWithPinchEnabled(vrSettings.isZoomWithPinchEnabled());
-        }
-
+        vrController.load(sourceConfig.getVrSettings());
         player.load(sourceConfig);
     }
 
@@ -173,6 +166,7 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
 
     @Override
     public void release() {
+        vrController.release();
         player.release();
         vrLib.onPause(context);
     }
@@ -182,7 +176,6 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
         player.restore();
         vrLib.onResume(context);
         ((VRView) player.getView()).setSurface(videoSurface);
-
     }
 
     @Override

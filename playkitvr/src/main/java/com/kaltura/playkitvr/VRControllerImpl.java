@@ -8,6 +8,7 @@ import android.view.View;
 import com.asha.vrlib.MDVRLibrary;
 import com.kaltura.playkit.PKLog;
 import com.kaltura.playkit.player.vr.VRInteractionMode;
+import com.kaltura.playkit.player.vr.VRSettings;
 
 
 public class VRControllerImpl implements VRController {
@@ -18,6 +19,7 @@ public class VRControllerImpl implements VRController {
     private MDVRLibrary vrLib;
 
     private View.OnClickListener surfaceClickListener;
+    private boolean onApplicationPaused = false;
 
     public VRControllerImpl(Context context, MDVRLibrary vrLib) {
         this.context = context;
@@ -150,4 +152,17 @@ public class VRControllerImpl implements VRController {
         surfaceClickListener.onClick(view);
     }
 
+    void load(VRSettings vrSettings) {
+        if(!onApplicationPaused) {
+            enableVRMode(vrSettings.isVrModeEnabled());
+            setFlingEnabled(vrSettings.isFlingEnabled());
+            setInteractionMode(vrSettings.getInteractionMode());
+            setZoomWithPinchEnabled(vrSettings.isZoomWithPinchEnabled());
+            onApplicationPaused = false;
+        }
+    }
+
+    void release() {
+        onApplicationPaused = true;
+    }
 }
