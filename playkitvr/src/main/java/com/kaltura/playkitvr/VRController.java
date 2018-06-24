@@ -54,4 +54,26 @@ public interface VRController extends PKController {
      * @return - true if this mode supported by the device. false otherwise.
      */
     boolean isModeSupported(VRInteractionMode mode);
+
+    /**
+     * @return - true if in vr mode. otherwise false.
+     */
+    boolean isVRModeEnabled();
+
+    /**
+     * @return - true if pinch is enabled.
+     */
+    boolean isPinchEnabled();
+
+    /**
+     * @return - true if enabled.
+     */
+    boolean isFlingEnabled();
+
+    /**
+     *
+     * @return - current interaction mode.
+     */
+    VRInteractionMode getInteractionMode();
+
 }
