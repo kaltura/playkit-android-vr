@@ -3,7 +3,6 @@ package com.kaltura.playkitvr;
 import android.content.Context;
 import android.view.MotionEvent;
 import android.view.Surface;
-import android.view.View;
 import android.widget.Toast;
 
 import com.asha.vrlib.MDVRLibrary;
@@ -18,7 +17,6 @@ import com.kaltura.playkit.player.PKTracks;
 import com.kaltura.playkit.player.PlayerEngine;
 import com.kaltura.playkit.player.PlayerView;
 import com.kaltura.playkit.player.metadata.PKMetadata;
-import com.kaltura.playkit.player.vr.VRInteractionMode;
 import com.kaltura.playkit.player.vr.VRSettings;
 import com.kaltura.playkit.utils.Consts;
 
@@ -37,15 +35,14 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
     private MDVRLibrary vrLib;
     private PlayerEngine player;
     private Surface videoSurface;
-
-    private View.OnClickListener surfaceClickListener;
-    private VRController vrController = initVRController();
+    private VRControllerImpl vrController;
 
     DefaultVRPlayerWrapper(final Context context, PlayerEngine player) {
         this.context = context;
         this.player = player;
         vrLib = createVRLibrary();
         vrLib.onResume(context);
+        this.vrController = new VRControllerImpl(context, vrLib);
     }
 
     private MDVRLibrary createVRLibrary() {
@@ -60,20 +57,23 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
                 .ifNotSupport(new MDVRLibrary.INotSupportCallback() {
                     @Override
                     public void onNotSupport(int mode) {
-                        String tip = mode == MDVRLibrary.INTERACTIVE_MODE_MOTION_WITH_TOUCH
-                                ? "onNotSupport:MOTION" : "onNotSupport:" + String.valueOf(mode);
-                        Toast.makeText(context, tip, Toast.LENGTH_SHORT).show();
+                        String errorMessage = ("Selected mode " + String.valueOf(mode) + " is not supported by the device");
+                        if (BuildConfig.DEBUG) {
+                            throw new IllegalStateException(errorMessage);
+                        }
+                        log.e(errorMessage);
+                        Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 })
                 .listenGesture(new MDVRLibrary.IGestureListener() {
                     @Override
                     public void onClick(MotionEvent e) {
-                        if (surfaceClickListener != null) {
-                            surfaceClickListener.onClick(player.getView());
+                        if(player == null || player.getView() == null) {
+                            return;
                         }
+                        vrController.onSurfaceClicked(player.getView());
                     }
                 })
-                .projectionFactory(new CustomProjectionFactory())
                 .barrelDistortionConfig(new BarrelDistortionConfig().setDefaultEnabled(false).setScale(0.95f))
                 .build(((VRView) player.getView()).getGlSurface());
     }
@@ -82,15 +82,14 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
     public void load(PKMediaSourceConfig sourceConfig) {
         VRSettings vrSettings = sourceConfig.getVrSettings();
         if (vrSettings != null) {
-            maybeChangeDisplayMode(vrSettings.isVrModeEnabled());
-            maybeChangeFlingConfiguration(vrSettings.isFlingEnabled());
-            maybeChangeInteractionMode(vrSettings.getInteractionMode());
-            maybeChangeZoomWithPinchConfiguration(vrSettings.isZoomWithPinchEnabled());
+            vrController.enableVRMode(vrSettings.isVrModeEnabled());
+            vrController.setFlingEnabled(vrSettings.isFlingEnabled());
+            vrController.setInteractionMode(vrSettings.getInteractionMode());
+            vrController.setZoomWithPinchEnabled(vrSettings.isZoomWithPinchEnabled());
         }
 
         player.load(sourceConfig);
     }
-
 
     @Override
     public PlayerView getView() {
@@ -190,7 +189,7 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
     public void destroy() {
         player.destroy();
         vrLib.onDestroy();
-        surfaceClickListener = null;
+        vrController = null;
     }
 
     @Override
@@ -239,7 +238,7 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
     @Override
     public <T extends PKController> T getController(Class<T> type) {
         if (type == VRController.class && vrController != null) {
-            return (T) vrController;
+            return (T) this.vrController;
         }
         return null;
     }
@@ -248,99 +247,5 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
     public void onOrientationChanged() {
         vrLib.onOrientationChanged(context);
     }
-
-    private VRController initVRController() {
-        return new VRController() {
-            @Override
-            public void enableVRMode(boolean shouldEnable) {
-                maybeChangeDisplayMode(shouldEnable);
-            }
-
-            @Override
-            public void setOnClickListener(View.OnClickListener onClickListener) {
-                surfaceClickListener = onClickListener;
-            }
-
-            @Override
-            public void setInteractionMode(VRInteractionMode mode) {
-                maybeChangeInteractionMode(mode);
-            }
-
-            @Override
-            public void setZoomWithPinchEnabled(boolean shouldEnable) {
-                maybeChangeZoomWithPinchConfiguration(shouldEnable);
-            }
-
-            @Override
-            public void setFlingEnabled(boolean shouldEnable) {
-                maybeChangeFlingConfiguration(shouldEnable);
-            }
-        };
-    }
-
-    private void maybeChangeInteractionMode(VRInteractionMode interactionMode) {
-        if (vrLib == null) {
-            log.w("Trying to change VR interaction mode while VRLibrary not initialized yet");
-            return;
-        }
-
-        int interactiveMode = getInteractionMode(interactionMode);
-        if (interactiveMode != vrLib.getInteractiveMode()) {
-            vrLib.switchInteractiveMode(context, getInteractionMode(interactionMode));
-        }
-    }
-
-    private void maybeChangeDisplayMode(boolean vrModeEnabled) {
-        if (vrLib == null) {
-            log.w("Trying to change VR display mode while VRLibrary not initialized yet");
-            return;
-        }
-
-        int requestedDisplayMode = vrModeEnabled ? MDVRLibrary.DISPLAY_MODE_GLASS : MDVRLibrary.DISPLAY_MODE_NORMAL;
-        int currentDisplayMode = vrLib.getDisplayMode();
-        if (requestedDisplayMode != currentDisplayMode) {
-            vrLib.switchDisplayMode(context, requestedDisplayMode);
-        }
-    }
-
-    private void maybeChangeZoomWithPinchConfiguration(boolean shouldEnable) {
-        if (vrLib == null) {
-            log.w("Trying to change Zoom with pinch configuration while VRLibrary not initialized yet");
-            return;
-        }
-
-        if (vrLib.isPinchEnabled() != shouldEnable) {
-            vrLib.setPinchEnabled(shouldEnable);
-        }
-    }
-
-    private void maybeChangeFlingConfiguration(boolean shouldEnable) {
-        if (vrLib == null) {
-            log.w("Trying to change Fling configuration while VRLibrary not initialized yet");
-            return;
-        }
-
-        if (vrLib.isFlingEnabled() != shouldEnable) {
-            vrLib.setFlingEnabled(shouldEnable);
-        }
-    }
-
-    private int getInteractionMode(VRInteractionMode mode) {
-        switch (mode) {
-            case Motion:
-                return MDVRLibrary.INTERACTIVE_MODE_MOTION;
-            case Touch:
-                return MDVRLibrary.INTERACTIVE_MODE_TOUCH;
-            case MotionWithTouch:
-                return MDVRLibrary.INTERACTIVE_MODE_MOTION_WITH_TOUCH;
-            case CardboardMotion:
-                return MDVRLibrary.INTERACTIVE_MODE_CARDBORAD_MOTION;
-            case CardboardMotionWithTouch:
-                return MDVRLibrary.INTERACTIVE_MODE_CARDBORAD_MOTION_WITH_TOUCH;
-            default:
-                return MDVRLibrary.INTERACTIVE_MODE_MOTION_WITH_TOUCH;
-        }
-    }
-
 }
 
