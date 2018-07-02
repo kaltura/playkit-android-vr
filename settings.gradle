@@ -1,5 +1,7 @@
 include ':playkitvr'
 
 
-include ':playkit-android'
-project(':playkit-android').projectDir = new File('../playkit-android/playkit')
+//include ':playkit-android'
+//project(':playkit-android').projectDir = new File('../playkit-android/playkit')
+//include ':MD360'
+//project(':MD360').projectDir = new File('../MD360Player4Android/vrlib')

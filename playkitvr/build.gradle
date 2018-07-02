@@ -1,9 +1,8 @@
 apply plugin: 'com.android.library'
+apply from: 'version.gradle'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '27.0.3'
-
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 26
@@ -22,8 +21,11 @@ android {
 }
 
 dependencies {
-    implementation project(":playkit")
-    implementation project(":MD360")
+
+    implementation 'com.kaltura:playkit-android:dev-SNAPSHOT'
+    //implementation project(":playkit")
+    implementation 'com.kaltura:MD360Player4Android:master'
+    //implementation project(":MD360")
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -31,6 +33,9 @@ dependencies {
     })
     implementation 'com.android.support:appcompat-v7:26.1.0'
     testImplementation 'junit:junit:4.12'
+}
 
-
+repositories {
+    maven { url "https://jitpack.io" }
+    google()
 }
