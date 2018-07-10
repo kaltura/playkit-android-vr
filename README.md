@@ -44,7 +44,7 @@ public enum VRInteractionMode {
 }
 ```
 
-###Using Providers:
+### Using Providers:
 in case the media entry is generated using the Providers if 360 meida was requested the callback of the provider will create a VRPKMediaEntry instead of 
 the PKMediaEntry that is created for regular media.
 The `VRPKMediaEntry` will be created with default VRSettings which application can set again or to change specific value using setter methods.
@@ -58,7 +58,7 @@ The `VRPKMediaEntry` will be created with default VRSettings which application c
 ((VRPKMediaEntry) vrMediaEntry).getVrSettings().setZoomWithPinchEnabled(isZoomWithPinchEnabled());
 ``` 
 
-###Manual Creation:
+### Manual Creation:
 ```java
 //define app VR configuration
 VRSettings vrSettings = new VRSettings()
@@ -165,7 +165,7 @@ VRController vrController = mPlayer.getController(VRController.class);
 
 ```
 
-###Example - Listen to clicks on surface 
+### Example - Listen to clicks on surface 
 App must pass the click listener via the controller
 
 ```java
@@ -180,5 +180,5 @@ VRController vrController = mPlayer.getController(VRController.class);
            });
 }
 ```
-### VR Controlers  
+
 
