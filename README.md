@@ -153,7 +153,18 @@ public interface VRController extends PKController {
 ```
 VRController vrController = mPlayer.getController(VRController.class);
 ```
-### Example - Control The VR Mode During Playback:
+### Validating Mode Change is supported by device before changing it on runtime
+
+``` java 
+ VRController vrController = mPlayer.getController(VRController.class);  
+ boolean modeSupported = vrController.isModeSupported(VRInteractionMode.CardboardMotion);
+ if (modeSupported) {
+ 	vrController.setInteractionMode(VRInteractionMode.CardboardMotion);
+ }
+                        
+```
+
+### Example - Change The VR Mode During Playback:
 
 ```java
  case TOGGLE_VR:
@@ -180,5 +191,5 @@ VRController vrController = mPlayer.getController(VRController.class);
            });
 }
 ```
-
+### VR Controlers  
 
