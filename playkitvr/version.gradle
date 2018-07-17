@@ -1,9 +1,9 @@
 
 // Library Version
-ext.libVersion = '0.1.0'
+ext.playkitvrVersion = 'dev'
 
 // Append short commit hash to dev builds, i.e. "dev.a1b2c3d"
-if (libVersion == 'dev') {
+if (playkitvrVersion == 'dev') {
     def cmd = "git rev-parse --short HEAD"
     def proc = cmd.execute()
     def commit = proc.text.trim()
@@ -21,7 +21,7 @@ try {
         repoName = 'android'
         userOrg = 'kaltura'
         groupId = 'com.kaltura.playkit'
-        version = libVersion
+        version = playkitvrVersion
         autoPublish = true
         licences = ['AGPL-3.0']
     }
