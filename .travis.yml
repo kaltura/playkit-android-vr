@@ -6,18 +6,8 @@ jdk:
 android:
   components:
   - tools
-  - platform-tools
-  - tools
-  - extra-android-m2repository
-  - extra-google-m2repository
-cache:
-  directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
-before_cache:
-  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 before_script:
-  - yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses
+  - curl https://kaltura.github.io/playkit/tools/android-sdk-license.sh | sh
 script:
   - ./gradlew playkitvr:build
 after_failure:
