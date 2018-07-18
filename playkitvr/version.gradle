@@ -21,7 +21,7 @@ try {
         repoName = 'android'
         userOrg = 'kaltura'
         groupId = 'com.kaltura.playkit'
-        version = playkitvrVersion
+        version = libVersion
         autoPublish = true
         licences = ['AGPL-3.0']
     }
