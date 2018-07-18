@@ -1,6 +1,6 @@
 
 // Library Version
-ext.playkitvrVersion = 'dev'
+ext.libVersion = 'dev'
 
 // Append short commit hash to dev builds, i.e. "dev.a1b2c3d"
 if (playkitvrVersion == 'dev') {
