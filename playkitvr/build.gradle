@@ -21,6 +21,10 @@ android {
     }
 }
 
+tasks.withType(Javadoc) {
+    options.addBooleanOption('Xdoclint:none', true)
+}
+
 dependencies {
 
     implementation 'com.kaltura:playkit-android:dev-SNAPSHOT'
