@@ -7,7 +7,7 @@ android:
   components:
   - tools
 before_script:
-  - curl https://kaltura.github.io/playkit/tools/android-sdk-license.sh | sh
+  - curl https://kaltura.github.io/fe-tools/android/license.sh | sh
 script:
   - ./gradlew playkitvr:build
 after_failure:
