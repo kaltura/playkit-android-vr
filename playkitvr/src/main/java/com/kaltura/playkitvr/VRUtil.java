@@ -1,5 +1,9 @@
 package com.kaltura.playkitvr;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
+
 import com.asha.vrlib.MDVRLibrary;
 import com.kaltura.playkit.player.vr.VRInteractionMode;
 
@@ -35,5 +39,33 @@ public class VRUtil {
         //If for some reason(probably after updating MDVRLib to newer version) requested mode does not present in the interactionModeMap
         // it means that this mode was not mapped to VRInteractionMde enum and we should add it.
         throw new IllegalArgumentException("VRLibMode " + vrLibMode + " is not mapped to the corresponding VRInteractionMode");
+    }
+
+    /**
+     * This method must be called before any change of InteractionMode applied.
+     *
+     * @param mode - requested mode
+     * @return - true if this mode supported by the device. false otherwise.
+     */
+    public static boolean isModeSupported(Context context, VRInteractionMode mode) {
+        switch (mode) {
+            case Touch:
+                //Always supported
+                return true;
+            case Motion:
+            case MotionWithTouch:
+                SensorManager motionSensorManager = (SensorManager) context
+                        .getSystemService(Context.SENSOR_SERVICE);
+                return motionSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) != null;
+            case CardboardMotion:
+            case CardboardMotionWithTouch:
+                SensorManager cardboardSensorManager = (SensorManager) context
+                        .getSystemService(Context.SENSOR_SERVICE);
+                Sensor accelerometerSensor = cardboardSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+                Sensor gyroSensor = cardboardSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+                return accelerometerSensor != null && gyroSensor != null;
+            default:
+                return true;
+        }
     }
 }
