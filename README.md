@@ -120,14 +120,6 @@ public interface VRController extends PKController {
     void setOnClickListener(View.OnClickListener onClickListener);
 
     /**
-     * This method must be called before any change of InteractionMode applied.
-     * See {@link #setInteractionMode(VRInteractionMode)}
-     * @param mode - requested mode
-     * @return - true if this mode supported by the device. false otherwise.
-     */
-    boolean isModeSupported(VRInteractionMode mode);
-
-    /**
      * @return - true if in vr mode. otherwise false.
      */
     boolean isVRModeEnabled();
@@ -153,11 +145,11 @@ public interface VRController extends PKController {
 ```
 VRController vrController = mPlayer.getController(VRController.class);
 ```
-### Validating Mode Change is supported by device before changing it on runtime
+### Validating Mode Change is supported by device. 
+Before applying InteractionMode(no matter if by calling api setInteractionMode() or change in in VRSettings setInteractionMode()) you should first check if this mode is supported by the device. In some cases device hardware does not support requested mode(for example InteractionMode.Motion not supported for devices without Gyro)
 
 ``` java 
- VRController vrController = mPlayer.getController(VRController.class);  
- boolean modeSupported = vrController.isModeSupported(VRInteractionMode.CardboardMotion);
+ boolean modeSupported = VRUtil.isModeSupported(context, VRInteractionMode.CardboardMotion);
  if (modeSupported) {
  	vrController.setInteractionMode(VRInteractionMode.CardboardMotion);
  }
