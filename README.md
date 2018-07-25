@@ -33,6 +33,7 @@ There are 2 possibilites to Generate PKMeidaEntry
 
 VR Module can work in 2 Modes 360 Player or Cardbord Player Mode
 for each mode application can cofigure the IntractionMode for each Player
+The default InteractionMode is VRInteractionMode.Touch
 
 ```java 
 public enum VRInteractionMode {
