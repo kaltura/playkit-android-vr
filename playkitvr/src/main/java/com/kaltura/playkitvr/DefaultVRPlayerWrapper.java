@@ -74,8 +74,8 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
                         vrController.onSurfaceClicked(player.getView());
                     }
                 })
-                .barrelDistortionConfig(new BarrelDistortionConfig().setDefaultEnabled(false).setScale(0.95f))
                 .interactiveMode(MDVRLibrary.INTERACTIVE_MODE_TOUCH)
+                .barrelDistortionConfig(new BarrelDistortionConfig().setDefaultEnabled(false).setScale(0.95f))
                 .build(((VRView) player.getView()).getGlSurface());
     }
 
