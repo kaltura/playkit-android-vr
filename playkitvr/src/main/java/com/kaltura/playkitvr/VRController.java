@@ -48,14 +48,6 @@ public interface VRController extends PKController {
     void setOnClickListener(View.OnClickListener onClickListener);
 
     /**
-     * This method must be called before any change of InteractionMode applied.
-     * See {@link #setInteractionMode(VRInteractionMode)}
-     * @param mode - requested mode
-     * @return - true if this mode supported by the device. false otherwise.
-     */
-    boolean isModeSupported(VRInteractionMode mode);
-
-    /**
      * @return - true if in vr mode. otherwise false.
      */
     boolean isVRModeEnabled();
