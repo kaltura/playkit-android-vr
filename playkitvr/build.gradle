@@ -3,7 +3,7 @@ apply from: 'version.gradle'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "27.0.0"
+    buildToolsVersion "27.0.3"
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 27
@@ -29,8 +29,9 @@ dependencies {
 
     implementation 'com.kaltura:playkit-android:dev-SNAPSHOT'
 //    implementation project(":playkit")
-    implementation 'com.kaltura:MD360Player4Android:master'
+//    implementation 'com.kaltura:MD360Player4Android:master'
 //    implementation project(":MD360")
+		implementation 'com.kaltura.playkit:md360player:1.0.0'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -41,6 +42,8 @@ dependencies {
 }
 
 repositories {
-    google()
-    maven { url "https://jitpack.io" }
+  maven { url "https://dl.bintray.com/kaltura/android" }
+  google()
+  jcenter()
+  maven { url "https://jitpack.io" }
 }
