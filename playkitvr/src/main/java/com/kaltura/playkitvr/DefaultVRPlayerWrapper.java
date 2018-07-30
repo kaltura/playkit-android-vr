@@ -212,8 +212,8 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
     }
 
     @Override
-    public boolean isLive() {
-        return player.isLive();
+    public boolean isLiveStream() {
+        return player.isLiveStream();
     }
 
     @Override
