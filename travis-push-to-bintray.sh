@@ -8,6 +8,8 @@
 # TRAVIS_TAG=v0.1.2 BINTRAY_USER=username BINTRAY_KEY=fjkhsdfka3289r82rkfe ./travis-push-to-bintray.sh
 
 
+LIB=playkitvr
+
 DRY_RUN=false
 
 # Only allow tags
@@ -27,11 +29,14 @@ if [[ ! $TAG_VERSION_NAME =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
 fi
 
 # Check that defined library version matches the tag.
-if ! grep -q "ext.libVersion = '$TAG_VERSION_NAME'" playkitvr/version.gradle
+if ! grep -q "ext.libVersion = '$TAG_VERSION_NAME'" $LIB/version.gradle
 then
     echo "Library version name in build.gradle does not match tag name; will perform a dry-run."
     DRY_RUN=true
 fi
 
+# Assuming a successful build, create javadoc jar, sources jar, pom
+./gradlew $LIB:publishReleasePublicationToMavenLocal
+
 # Upload
-./gradlew playkitvr:bintrayUpload -PdryRun=$DRY_RUN -PbintrayUser=$BINTRAY_USER -PbintrayKey=$BINTRAY_KEY
+./gradlew $LIB:bintrayUpload -PdryRun=$DRY_RUN -PbintrayUser=$BINTRAY_USER -PbintrayKey=$BINTRAY_KEY
