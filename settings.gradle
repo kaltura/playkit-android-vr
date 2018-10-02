@@ -1,6 +1,5 @@
 include ':playkitvr'
 
-
 //include ':playkit-android'
 //project(':playkit-android').projectDir = new File('../playkit-android/playkit')
 //include ':MD360'
