@@ -25,22 +25,22 @@ tasks.withType(Javadoc) {
 }
 
 dependencies {
-
     implementation 'com.kaltura:playkit-android:dev-SNAPSHOT'
     //implementation project(":playkit")
 
     //implementation 'com.kaltura:MD360Player4Android:master'
     //implementation project(":MD360")
-	//implementation 'com.kaltura.playkit:md360player:1.0.0'
-    implementation 'com.kaltura:MD360Player4Android:14b41da5e63d463c27fe9071a78e0ac2e4ec2013'
+	implementation 'com.kaltura.playkit:md360player:1.0.0'
+
+    //implementation 'com.kaltura:MD360Player4Android:14b41da5e63d463c27fe9071a78e0ac2e4ec2013'
+    //implementation 'com.kaltura:playkit-android:1c0ac2b0d936ecbac3a3ab491333de78ed51ff7a'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    testImplementation 'junit:junit:4.12'
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'com.android.support:appcompat-v7:28.0.0', {
-        exclude group: 'com.android.support', module: 'support-v4'
-    }
     testImplementation 'junit:junit:4.12'
 }
 
