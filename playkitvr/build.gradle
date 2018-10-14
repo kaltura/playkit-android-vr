@@ -30,7 +30,8 @@ dependencies {
     //implementation project(":playkit")
     //implementation 'com.kaltura:MD360Player4Android:master'
     //implementation project(":MD360")
-	 implementation 'com.kaltura.playkit:md360player:1.0.0'
+	//implementation 'com.kaltura.playkit:md360player:1.0.0'
+    implementation 'com.kaltura:MD360Player4Android:98e3cebf5201c6534bfbc373187c2f417415e5d6'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
