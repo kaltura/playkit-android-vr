@@ -36,8 +36,7 @@ dependencies {
     //implementation 'com.kaltura:playkit-android:1c0ac2b0d936ecbac3a3ab491333de78ed51ff7a'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    testImplementation 'junit:junit:4.12'
+    
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
