@@ -2,10 +2,10 @@ apply plugin: 'com.android.library'
 apply from: 'version.gradle'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName libVersion
 
@@ -25,24 +25,27 @@ tasks.withType(Javadoc) {
 }
 
 dependencies {
-
     implementation 'com.kaltura:playkit-android:dev-SNAPSHOT'
-//    implementation project(":playkit")
-//    implementation 'com.kaltura:MD360Player4Android:master'
-//    implementation project(":MD360")
-		implementation 'com.kaltura.playkit:md360player:1.0.0'
+    //implementation project(":playkit")
+
+    //implementation 'com.kaltura:MD360Player4Android:master'
+    //implementation project(":MD360")
+	implementation 'com.kaltura.playkit:md360player:1.0.2'
+
+    //implementation 'com.kaltura:MD360Player4Android:14b41da5e63d463c27fe9071a78e0ac2e4ec2013'
+    //implementation 'com.kaltura:playkit-android:1c0ac2b0d936ecbac3a3ab491333de78ed51ff7a'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'com.android.support:appcompat-v7:27.0.0'
     testImplementation 'junit:junit:4.12'
 }
 
 repositories {
-  maven { url "https://dl.bintray.com/kaltura/android" }
   google()
   jcenter()
+  maven { url "https://dl.bintray.com/kaltura/android" }
   maven { url "https://jitpack.io" }
 }
