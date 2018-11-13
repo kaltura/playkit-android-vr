@@ -17,7 +17,6 @@ import com.kaltura.playkit.player.PKTracks;
 import com.kaltura.playkit.player.PlayerEngine;
 import com.kaltura.playkit.player.PlayerView;
 import com.kaltura.playkit.player.metadata.PKMetadata;
-import com.kaltura.playkit.player.vr.VRSettings;
 import com.kaltura.playkit.utils.Consts;
 
 import java.util.List;
@@ -51,7 +50,14 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
                     @Override
                     public void onSurfaceReady(Surface surface) {
                         videoSurface = surface;
-                        ((VRView) player.getView()).setSurface(videoSurface);
+                        final PlayerView view = player.getView();
+                        view.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((VRView) view).setSurface(videoSurface);
+
+                            }
+                        });
                     }
                 })
                 .ifNotSupport(new MDVRLibrary.INotSupportCallback() {
@@ -68,10 +74,9 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
                 .listenGesture(new MDVRLibrary.IGestureListener() {
                     @Override
                     public void onClick(MotionEvent e) {
-                        if (player == null || player.getView() == null) {
-                            return;
+                        if (vrController != null && player != null) {
+                            vrController.onSurfaceClicked(player.getView());
                         }
-                        vrController.onSurfaceClicked(player.getView());
                     }
                 })
                 .interactiveMode(MDVRLibrary.INTERACTIVE_MODE_TOUCH)
