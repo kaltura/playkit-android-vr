@@ -11,6 +11,7 @@ import android.view.Surface;
 import android.view.ViewGroup;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ui.SubtitleView;
 import com.kaltura.playkit.player.BaseExoplayerView;
 
 
@@ -46,6 +47,12 @@ public class VRView extends BaseExoplayerView {
     @Override
     public void setVideoSurfaceProperties(boolean useTextureView, boolean isSurfaceSecured) {
 
+    }
+
+    @Override
+    public SubtitleView getSubtitleView() {
+        //Not implemented yet
+        return null;
     }
 
     @Override
