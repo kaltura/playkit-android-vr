@@ -16,6 +16,7 @@ import com.kaltura.playkit.player.PKMediaSourceConfig;
 import com.kaltura.playkit.player.PKTracks;
 import com.kaltura.playkit.player.PlayerEngine;
 import com.kaltura.playkit.player.PlayerView;
+import com.kaltura.playkit.player.SubtitleStyleSettings;
 import com.kaltura.playkit.player.metadata.PKMetadata;
 import com.kaltura.playkit.utils.Consts;
 
@@ -232,6 +233,11 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
             return player.getPlaybackRate();
         }
         return Consts.DEFAULT_PLAYBACK_RATE_SPEED;
+    }
+
+    @Override
+    public void updateSubtitleStyle(SubtitleStyleSettings subtitleStyleSettings) {
+         return; //Do nothing here
     }
 
     @Override
