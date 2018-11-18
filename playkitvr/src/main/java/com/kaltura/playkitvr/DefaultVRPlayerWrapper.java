@@ -237,7 +237,7 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
 
     @Override
     public void updateSubtitleStyle(SubtitleStyleSettings subtitleStyleSettings) {
-
+         //Do nothing here
     }
 
     @Override
