@@ -1,7 +1,6 @@
 package com.kaltura.playkitvr;
 
 import android.content.Context;
-import android.view.MotionEvent;
 import android.view.Surface;
 import android.widget.Toast;
 
@@ -47,37 +46,22 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
 
     private MDVRLibrary createVRLibrary() {
         return MDVRLibrary.with(context)
-                .asVideo(new MDVRLibrary.IOnSurfaceReadyCallback() {
-                    @Override
-                    public void onSurfaceReady(Surface surface) {
-                        videoSurface = surface;
-                        final PlayerView view = player.getView();
-                        view.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                ((VRView) view).setSurface(videoSurface);
-
-                            }
-                        });
-                    }
+                .asVideo(surface -> {
+                    videoSurface = surface;
+                    final PlayerView view = player.getView();
+                    view.post(() -> ((VRView) view).setSurface(videoSurface));
                 })
-                .ifNotSupport(new MDVRLibrary.INotSupportCallback() {
-                    @Override
-                    public void onNotSupport(int mode) {
-                        String errorMessage = ("Selected mode " + String.valueOf(mode) + " is not supported by the device");
-                        if (BuildConfig.DEBUG) {
-                            throw new IllegalStateException(errorMessage);
-                        }
-                        log.e(errorMessage);
-                        Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+                .ifNotSupport(mode -> {
+                    String errorMessage = ("Selected mode " + String.valueOf(mode) + " is not supported by the device");
+                    if (BuildConfig.DEBUG) {
+                        throw new IllegalStateException(errorMessage);
                     }
+                    log.e(errorMessage);
+                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
                 })
-                .listenGesture(new MDVRLibrary.IGestureListener() {
-                    @Override
-                    public void onClick(MotionEvent e) {
-                        if (vrController != null && player != null) {
-                            vrController.onSurfaceClicked(player.getView());
-                        }
+                .listenGesture(e -> {
+                    if (vrController != null && player != null) {
+                        vrController.onSurfaceClicked(player.getView());
                     }
                 })
                 .interactiveMode(MDVRLibrary.INTERACTIVE_MODE_TOUCH)
@@ -172,6 +156,11 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
     }
 
     @Override
+    public void setAnalyticsListener(AnalyticsListener analyticsListener) {
+        player.setAnalyticsListener(analyticsListener);
+    }
+
+    @Override
     public void release() {
         vrController.release();
         player.release();
@@ -237,13 +226,14 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
 
     @Override
     public void updateSubtitleStyle(SubtitleStyleSettings subtitleStyleSettings) {
-         return; //Do nothing here
+         //Do nothing here
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T extends PKController> T getController(Class<T> type) {
         if (type == VRController.class && vrController != null) {
-            return (T) this.vrController;
+            return (T) vrController;
         }
         return null;
     }
