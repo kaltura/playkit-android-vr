@@ -22,10 +22,6 @@ import com.kaltura.playkit.utils.Consts;
 import java.util.List;
 
 
-/**
- * Created by anton.afanasiev on 29/08/2017.
- */
-
 class DefaultVRPlayerWrapper implements PlayerEngine {
 
     private PKLog log = PKLog.get(DefaultVRPlayerWrapper.class.getSimpleName());
@@ -98,6 +94,11 @@ class DefaultVRPlayerWrapper implements PlayerEngine {
     @Override
     public long getCurrentPosition() {
         return player.getCurrentPosition();
+    }
+
+    @Override
+    public long getProgramStartTime() {
+        return player.getProgramStartTime();
     }
 
     @Override
