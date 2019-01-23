@@ -19,6 +19,7 @@ public class VRView extends BaseExoplayerView {
 
     private GLSurfaceView surface;
     private SimpleExoPlayer player;
+    private Surface videoSurface;
 
     public VRView(Context context) {
         this(context, null);
@@ -38,10 +39,16 @@ public class VRView extends BaseExoplayerView {
     @Override
     public void setPlayer(SimpleExoPlayer player, boolean useTextureView, boolean isSurfaceSecured) {
         this.player = player;
+        if (this.player != null && videoSurface != null) {
+            this.player.setVideoSurface(videoSurface);
+        }
     }
 
     void setSurface(Surface surface) {
-        this.player.setVideoSurface(surface);
+        videoSurface = surface;
+        if (player != null) {
+            player.setVideoSurface(surface);
+        }
     }
 
     @Override
@@ -83,4 +90,3 @@ public class VRView extends BaseExoplayerView {
         return surface;
     }
 }
-
