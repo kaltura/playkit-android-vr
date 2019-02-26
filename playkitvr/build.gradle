@@ -34,7 +34,7 @@ dependencies {
 
     //implementation 'com.kaltura:MD360Player4Android:master'
     //implementation project(":MD360")
-	implementation 'com.kaltura.playkit:md360player:1.0.3'
+	implementation 'com.kaltura.playkit:md360player:1.0.4'
 
     //implementation 'com.kaltura:MD360Player4Android:14b41da5e63d463c27fe9071a78e0ac2e4ec2013'
     //implementation 'com.kaltura:playkit-android:1c0ac2b0d936ecbac3a3ab491333de78ed51ff7a'
