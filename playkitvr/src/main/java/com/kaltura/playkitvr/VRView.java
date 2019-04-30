@@ -89,4 +89,9 @@ public class VRView extends BaseExoplayerView {
     GLSurfaceView getGlSurface() {
         return surface;
     }
+
+    @Override
+    public void setArtworkViewVisibility(boolean isVisible) {
+
+    }
 }
