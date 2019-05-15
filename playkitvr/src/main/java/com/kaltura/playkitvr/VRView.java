@@ -37,7 +37,7 @@ public class VRView extends BaseExoplayerView {
     }
 
     @Override
-    public void setPlayer(SimpleExoPlayer player, boolean useTextureView, boolean isSurfaceSecured) {
+    public void setPlayer(SimpleExoPlayer player, boolean useTextureView, boolean isSurfaceSecured, boolean hideVideoViews) {
         this.player = player;
         if (this.player != null && videoSurface != null) {
             this.player.setVideoSurface(videoSurface);
@@ -52,7 +52,7 @@ public class VRView extends BaseExoplayerView {
     }
 
     @Override
-    public void setVideoSurfaceProperties(boolean useTextureView, boolean isSurfaceSecured) {
+    public void setVideoSurfaceProperties(boolean useTextureView, boolean isSurfaceSecured, boolean hideVideoViews) {
 
     }
 
