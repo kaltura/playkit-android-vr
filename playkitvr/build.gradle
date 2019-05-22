@@ -13,7 +13,7 @@ android {
         versionCode 1
         versionName libVersion
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -29,21 +29,19 @@ tasks.withType(Javadoc) {
 }
 
 dependencies {
-    implementation 'com.kaltura:playkit-android:dev-SNAPSHOT'
-    //implementation project(":playkit")
+   // implementation 'com.kaltura:playkit-android:dev-SNAPSHOT'
+    implementation project(":playkit")
 
     //implementation 'com.kaltura:MD360Player4Android:master'
-    //implementation project(":MD360")
-	implementation 'com.kaltura.playkit:md360player:1.0.4'
+    implementation project(":MD360Player4Android")
+	//implementation 'com.kaltura.playkit:md360player:1.0.4'
 
     //implementation 'com.kaltura:MD360Player4Android:14b41da5e63d463c27fe9071a78e0ac2e4ec2013'
     //implementation 'com.kaltura:playkit-android:1c0ac2b0d936ecbac3a3ab491333de78ed51ff7a'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0')
     testImplementation 'junit:junit:4.12'
 }
 
