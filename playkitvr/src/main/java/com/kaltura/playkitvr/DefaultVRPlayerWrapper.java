@@ -43,7 +43,7 @@ class DefaultVRPlayerWrapper extends PlayerEngineWrapper {
                     }
                 })
                 .ifNotSupport(mode -> {
-                    String errorMessage = ("Selected mode " + String.valueOf(mode) + " is not supported by the device");
+                    String errorMessage = ("Selected mode " + mode + " is not supported by the device");
                     if (BuildConfig.DEBUG) {
                         throw new IllegalStateException(errorMessage);
                     }
