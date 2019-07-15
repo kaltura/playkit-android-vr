@@ -1,8 +1,6 @@
 package com.kaltura.playkitvr;
 
 import android.content.Context;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.view.View;
 
 import com.asha.vrlib.MDVRLibrary;
