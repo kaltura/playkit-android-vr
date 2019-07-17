@@ -10,8 +10,8 @@ import android.util.AttributeSet;
 import android.view.Surface;
 import android.view.ViewGroup;
 
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.ui.SubtitleView;
+import com.kaltura.android.exoplayer2.SimpleExoPlayer;
+import com.kaltura.android.exoplayer2.ui.SubtitleView;
 import com.kaltura.playkit.player.BaseExoplayerView;
 
 
