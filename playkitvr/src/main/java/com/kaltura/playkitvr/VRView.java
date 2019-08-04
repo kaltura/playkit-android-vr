@@ -70,12 +70,13 @@ class VRView extends BaseExoplayerView {
                     case Player.STATE_READY:
                         if (playWhenReady) {
                             log.d("VRView READY. playWhenReady => " + playWhenReady);
-                            shutterView.setVisibility(INVISIBLE);
+                            if (subtitleView != null) {
+                                shutterView.setVisibility(INVISIBLE);
+                            }
                         }
                         break;
                     default:
                         break;
-
                 }
             }
         };
