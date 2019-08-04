@@ -75,7 +75,6 @@ class VRView extends BaseExoplayerView {
                         break;
                     default:
                         break;
-
                 }
             }
         };
