@@ -17,11 +17,11 @@ try {
 
     publish {
         artifactId = 'vrplugin'
-        description = 'PlayKit VR Plugin'
+        desc = 'PlayKit VR Plugin'
         repoName = 'android'
         userOrg = 'kaltura'
         groupId = 'com.kaltura.playkit'
-        version = libVersion
+        publishVersion = libVersion
         autoPublish = true
         licences = ['AGPL-3.0']
     }
