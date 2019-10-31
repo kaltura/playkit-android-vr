@@ -136,7 +136,7 @@ class VRView extends BaseExoplayerView {
 
         surface.setSecure(isSurfaceSecured);
 
-        if (contentFrame.getChildCount() > 0 &&  !(contentFrame.getChildAt(0) instanceof GLSurfaceView)) {
+        if (contentFrame != null && contentFrame.getChildCount() > 0 &&  !(contentFrame.getChildAt(0) instanceof GLSurfaceView)) {
             contentFrame.addView(surface, 0);
         }
     }
@@ -153,8 +153,6 @@ class VRView extends BaseExoplayerView {
         if (oldTextComponent != null) {
             oldTextComponent.removeTextOutput(componentListener);
         }
-
-        //contentFrame.removeView(surface);
     }
 
     @Override
