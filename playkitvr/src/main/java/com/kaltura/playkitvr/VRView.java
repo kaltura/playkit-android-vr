@@ -31,7 +31,6 @@ import java.util.List;
 class VRView extends BaseExoplayerView {
 
     private static final PKLog log = PKLog.get("VRView");
-    private Context vrViewContext;
     private View shutterView;
     private SubtitleView subtitleView;
     private AspectRatioFrameLayout contentFrame;
@@ -45,7 +44,6 @@ class VRView extends BaseExoplayerView {
 
     VRView(Context context) {
         this(context, null);
-        this.vrViewContext = context;
     }
 
     VRView(Context context, AttributeSet attrs) {
