@@ -31,6 +31,7 @@ import java.util.List;
 class VRView extends BaseExoplayerView {
 
     private static final PKLog log = PKLog.get("VRView");
+    private Context vrViewContext;
     private View shutterView;
     private SubtitleView subtitleView;
     private AspectRatioFrameLayout contentFrame;
@@ -44,6 +45,7 @@ class VRView extends BaseExoplayerView {
 
     VRView(Context context) {
         this(context, null);
+        this.vrViewContext = context;
     }
 
     VRView(Context context, AttributeSet attrs) {
@@ -134,7 +136,9 @@ class VRView extends BaseExoplayerView {
 
         surface.setSecure(isSurfaceSecured);
 
-        contentFrame.addView(surface, 0);
+        if (contentFrame.getChildCount() > 0 &&  !(contentFrame.getChildAt(0) instanceof GLSurfaceView)) {
+            contentFrame.addView(surface, 0);
+        }
     }
 
     /**
@@ -150,7 +154,7 @@ class VRView extends BaseExoplayerView {
             oldTextComponent.removeTextOutput(componentListener);
         }
 
-        contentFrame.removeView(surface);
+        //contentFrame.removeView(surface);
     }
 
     @Override
