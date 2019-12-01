@@ -29,7 +29,7 @@ tasks.withType(Javadoc) {
 }
 
 dependencies {
-    implementation 'com.kaltura:playkit-android:dev-SNAPSHOT'
+    implementation 'com.kaltura.playkit:playkit:4.4.0'
     //implementation project(":playkit")
 
     //implementation 'com.kaltura:MD360Player4Android:master'
