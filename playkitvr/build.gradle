@@ -2,14 +2,14 @@ apply plugin: 'com.android.library'
 apply from: 'version.gradle'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName libVersion
 
@@ -33,8 +33,8 @@ dependencies {
     //implementation project(":playkit")
 
     //implementation 'com.kaltura:MD360Player4Android:master'
+    implementation 'com.kaltura.playkit:md360player:1.0.4'
     //implementation project(":MD360")
-	implementation 'com.kaltura.playkit:md360player:1.0.4'
 
     //implementation 'com.kaltura:MD360Player4Android:14b41da5e63d463c27fe9071a78e0ac2e4ec2013'
     //implementation 'com.kaltura:playkit-android:1c0ac2b0d936ecbac3a3ab491333de78ed51ff7a'
