@@ -43,8 +43,7 @@ class VRView extends BaseExoplayerView {
     private Player.EventListener playerEventListener;
 
     private GLSurfaceView surface;
-
-
+    
     VRView(Context context) {
         this(context, null);
     }
