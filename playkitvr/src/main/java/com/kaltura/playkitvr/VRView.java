@@ -25,7 +25,9 @@ import com.kaltura.playkit.PKLog;
 import com.kaltura.android.exoplayer2.SimpleExoPlayer;
 import com.kaltura.android.exoplayer2.ui.SubtitleView;
 import com.kaltura.playkit.player.BaseExoplayerView;
+import com.kaltura.playkit.player.PKSubtitlePosition;
 
+import java.util.ArrayList;
 import java.util.List;
 
 class VRView extends BaseExoplayerView {
@@ -33,6 +35,7 @@ class VRView extends BaseExoplayerView {
     private static final PKLog log = PKLog.get("VRView");
     private View shutterView;
     private SubtitleView subtitleView;
+    private PKSubtitlePosition subtitleViewPosition;
     private AspectRatioFrameLayout contentFrame;
 
     private SimpleExoPlayer player;
@@ -40,8 +43,7 @@ class VRView extends BaseExoplayerView {
     private Player.EventListener playerEventListener;
 
     private GLSurfaceView surface;
-
-
+    
     VRView(Context context) {
         this(context, null);
     }
@@ -205,6 +207,11 @@ class VRView extends BaseExoplayerView {
         }
     }
 
+    @Override
+    public void setSubtitleViewPosition(PKSubtitlePosition subtitleViewPosition) {
+        this.subtitleViewPosition = subtitleViewPosition;
+    }
+
     private void initContentFrame() {
         contentFrame = new AspectRatioFrameLayout(getContext());
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -260,6 +267,10 @@ class VRView extends BaseExoplayerView {
 
         @Override
         public void onCues(List<Cue> cues) {
+            if (subtitleViewPosition != null) {
+                cues = getModifiedSubtitlePosition(cues, subtitleViewPosition);
+            }
+
             if (subtitleView != null) {
                 subtitleView.onCues(cues);
             }
@@ -289,6 +300,42 @@ class VRView extends BaseExoplayerView {
                 int oldRight,
                 int oldBottom) {
         }
+    }
+
+    /**
+     * Creates new cue configuration if `isIgnoreCueSettings` is set to true by application
+     * Checks if the application wants to ignore the in-stream CueSettings otherwise goes with existing Cue configuration
+     *
+     * @param cueList cue list coming in stream
+     * @param subtitleViewPosition subtitle view position configuration set by application
+     * @return List of modified Cues
+     */
+    public List<Cue> getModifiedSubtitlePosition(List<Cue> cueList, PKSubtitlePosition subtitleViewPosition) {
+        if (cueList != null && !cueList.isEmpty()) {
+            List<Cue> newCueList = new ArrayList<>();
+            for (Cue cue : cueList) {
+                if ((cue.line !=  Cue.DIMEN_UNSET || cue.position != Cue.DIMEN_UNSET)
+                        && !subtitleViewPosition.isOverrideInlineCueConfig()) {
+                    newCueList.add(cue);
+                    continue;
+                }
+                CharSequence text = cue.text;
+                if (text != null) {
+                    Cue newCue = new Cue(text,
+                            subtitleViewPosition.getSubtitleHorizontalPosition(),
+                            subtitleViewPosition.getVerticalPositionPercentage(), // line and line type are dependent
+                            subtitleViewPosition.getLineType(),
+                            cue.lineAnchor,
+                            cue.position,
+                            cue.positionAnchor,
+                            subtitleViewPosition.getHorizontalPositionPercentage());
+                    newCueList.add(newCue);
+                }
+            }
+            return newCueList;
+        }
+
+        return cueList;
     }
 }
 
