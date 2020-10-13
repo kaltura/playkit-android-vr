@@ -85,7 +85,7 @@ class VRView extends BaseExoplayerView {
             public void onIsPlayingChanged(boolean isPlaying) {
                 log.d("VRView onIsPlayingChanged isPlaying = " + isPlaying);
 
-                if (isPlaying && subtitleView != null) {
+                if (isPlaying && shutterView != null) {
                     shutterView.setVisibility(INVISIBLE);
                 }
             }
