@@ -41,7 +41,7 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0')
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.3.0')
     testImplementation 'junit:junit:4.12'
 }
 

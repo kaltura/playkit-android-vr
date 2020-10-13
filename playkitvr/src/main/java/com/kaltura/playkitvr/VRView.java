@@ -66,19 +66,26 @@ class VRView extends BaseExoplayerView {
     private Player.EventListener getPlayerEventListener() {
         return new Player.EventListener() {
             @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+            public void onPlaybackStateChanged(int playbackState) {
                 switch (playbackState) {
-
                     case Player.STATE_READY:
-                        if (playWhenReady) {
-                            log.d("VRView READY. playWhenReady => " + playWhenReady);
-                            if (subtitleView != null) {
+                        if (player != null && player.getPlayWhenReady()) {
+                            log.d("VRView READY. playWhenReady => true");
+                            if (shutterView != null) {
                                 shutterView.setVisibility(INVISIBLE);
                             }
                         }
                         break;
                     default:
                         break;
+                }
+            }
+
+            @Override
+            public void onIsPlayingChanged(boolean isPlaying) {
+                log.d("VRView onIsPlayingChanged isPlaying = " + isPlaying);
+                if (isPlaying && shutterView != null) {
+                    shutterView.setVisibility(INVISIBLE);
                 }
             }
         };
@@ -321,14 +328,14 @@ class VRView extends BaseExoplayerView {
                 }
                 CharSequence text = cue.text;
                 if (text != null) {
-                    Cue newCue = new Cue(text,
-                            subtitleViewPosition.getSubtitleHorizontalPosition(),
-                            subtitleViewPosition.getVerticalPositionPercentage(), // line and line type are dependent
-                            subtitleViewPosition.getLineType(),
-                            cue.lineAnchor,
-                            cue.position,
-                            cue.positionAnchor,
-                            subtitleViewPosition.getHorizontalPositionPercentage());
+                    Cue newCue = new Cue.Builder().
+                            setText(text).
+                            setTextAlignment(subtitleViewPosition.getSubtitleHorizontalPosition()).
+                            setLine(subtitleViewPosition.getVerticalPositionPercentage(), subtitleViewPosition.getLineType()).
+                            setLineAnchor(cue.lineAnchor).
+                            setPosition(cue.position).
+                            setPositionAnchor(cue.positionAnchor).
+                            setSize(subtitleViewPosition.getHorizontalPositionPercentage()).build();
                     newCueList.add(newCue);
                 }
             }
