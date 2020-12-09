@@ -62,10 +62,11 @@ class DefaultVRPlayerWrapper extends PlayerEngineWrapper {
     @Override
     public void load(PKMediaSourceConfig sourceConfig) {
         VRSettings vrSettings = sourceConfig.getVrSettings();
-        if (!VRUtil.isModeSupported(context, vrSettings.getInteractionMode())) {
+        if (vrSettings != null && !VRUtil.isModeSupported(context, vrSettings.getInteractionMode())) {
             //In case when mode is not supported we switch to supported mode.
             vrSettings.setInteractionMode(VRInteractionMode.Touch);
-            String errorMessage = ("load: VR interactionMode: " + vrSettings.getInteractionMode().name() + " is not supported by the device using VRInteractionMode.Touch instead");
+            String vrInteractionModeName = vrSettings.getInteractionMode() != null ? vrSettings.getInteractionMode().name() : "unknown";
+            String errorMessage = ("load: VR interactionMode: " + vrInteractionModeName + " is not supported by the device using VRInteractionMode.Touch instead");
             log.e(errorMessage);
         }
 
