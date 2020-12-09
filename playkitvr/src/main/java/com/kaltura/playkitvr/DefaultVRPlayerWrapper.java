@@ -12,6 +12,8 @@ import com.kaltura.playkit.PlayerEngineWrapper;
 import com.kaltura.playkit.player.PKMediaSourceConfig;
 import com.kaltura.playkit.player.PlayerEngine;
 import com.kaltura.playkit.player.PlayerView;
+import com.kaltura.playkit.player.vr.VRInteractionMode;
+import com.kaltura.playkit.player.vr.VRSettings;
 import com.kaltura.playkit.utils.Consts;
 
 class DefaultVRPlayerWrapper extends PlayerEngineWrapper {
@@ -44,9 +46,6 @@ class DefaultVRPlayerWrapper extends PlayerEngineWrapper {
                 })
                 .ifNotSupport(mode -> {
                     String errorMessage = ("Selected mode " + mode + " is not supported by the device");
-                    if (BuildConfig.DEBUG) {
-                        throw new IllegalStateException(errorMessage);
-                    }
                     log.e(errorMessage);
                     Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
                 })
@@ -62,7 +61,16 @@ class DefaultVRPlayerWrapper extends PlayerEngineWrapper {
 
     @Override
     public void load(PKMediaSourceConfig sourceConfig) {
-        vrController.load(sourceConfig.getVrSettings());
+        VRSettings vrSettings = sourceConfig.getVrSettings();
+        if (vrSettings != null && !VRUtil.isModeSupported(context, vrSettings.getInteractionMode())) {
+            //In case when mode is not supported we switch to supported mode.
+            String vrInteractionModeName = vrSettings.getInteractionMode() != null ? vrSettings.getInteractionMode().name() : "unknown";
+            vrSettings.setInteractionMode(VRInteractionMode.Touch);
+            String errorMessage = ("load: VR interactionMode: " + vrInteractionModeName + " is not supported by the device using VRInteractionMode.Touch instead");
+            log.e(errorMessage);
+        }
+
+        vrController.load(vrSettings);
         playerEngine.load(sourceConfig);
     }
 

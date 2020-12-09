@@ -48,6 +48,10 @@ public class VRUtil {
      * @return - true if this mode supported by the device. false otherwise.
      */
     public static boolean isModeSupported(Context context, VRInteractionMode mode) {
+        if (mode == null) {
+            return false;
+        }
+
         switch (mode) {
             case Touch:
                 //Always supported
