@@ -43,7 +43,8 @@ class VRView extends BaseExoplayerView {
     private Player.EventListener playerEventListener;
 
     private GLSurfaceView surface;
-    
+    private List<Cue> lastReportedCues;
+
     VRView(Context context) {
         this(context, null);
     }
@@ -160,6 +161,7 @@ class VRView extends BaseExoplayerView {
         if (oldTextComponent != null) {
             oldTextComponent.removeTextOutput(componentListener);
         }
+        lastReportedCues = null;
     }
 
     @Override
@@ -204,6 +206,14 @@ class VRView extends BaseExoplayerView {
     @Override
     public SubtitleView getSubtitleView() {
         return subtitleView;
+    }
+
+    @Override
+    public void applySubtitlesChanges() {
+        if (subtitleView != null && lastReportedCues != null) {
+            subtitleView.onCues(getModifiedSubtitlePosition(lastReportedCues, subtitleViewPosition));
+            lastReportedCues = null;
+        }
     }
 
     @Override
@@ -276,6 +286,7 @@ class VRView extends BaseExoplayerView {
         public void onCues(List<Cue> cues) {
             if (subtitleViewPosition != null) {
                 cues = getModifiedSubtitlePosition(cues, subtitleViewPosition);
+                lastReportedCues = cues;
             }
 
             if (subtitleView != null) {
