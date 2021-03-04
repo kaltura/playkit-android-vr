@@ -283,9 +283,9 @@ class VRView extends BaseExoplayerView {
 
         @Override
         public void onCues(List<Cue> cues) {
+            lastReportedCues = cues;
             if (subtitleViewPosition != null) {
                 cues = getModifiedSubtitlePosition(cues, subtitleViewPosition);
-                lastReportedCues = cues;
             }
 
             if (subtitleView != null) {
@@ -355,4 +355,3 @@ class VRView extends BaseExoplayerView {
         return cueList;
     }
 }
-
