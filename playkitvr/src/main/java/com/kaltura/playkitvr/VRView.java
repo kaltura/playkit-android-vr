@@ -328,7 +328,7 @@ class VRView extends BaseExoplayerView {
      * @return List of modified Cues
      */
     public List<Cue> getModifiedSubtitlePosition(List<Cue> cueList, PKSubtitlePosition subtitleViewPosition) {
-        if (cueList != null && !cueList.isEmpty()) {
+        if (subtitleViewPosition != null && cueList != null && !cueList.isEmpty()) {
             List<Cue> newCueList = new ArrayList<>();
             for (Cue cue : cueList) {
                 if ((cue.line !=  Cue.DIMEN_UNSET || cue.position != Cue.DIMEN_UNSET)
