@@ -212,7 +212,6 @@ class VRView extends BaseExoplayerView {
     public void applySubtitlesChanges() {
         if (subtitleView != null && lastReportedCues != null) {
             subtitleView.onCues(getModifiedSubtitlePosition(lastReportedCues, subtitleViewPosition));
-            lastReportedCues = null;
         }
     }
 
