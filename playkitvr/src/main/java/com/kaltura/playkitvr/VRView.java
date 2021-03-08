@@ -43,7 +43,8 @@ class VRView extends BaseExoplayerView {
     private Player.EventListener playerEventListener;
 
     private GLSurfaceView surface;
-    
+    private List<Cue> lastReportedCues;
+
     VRView(Context context) {
         this(context, null);
     }
@@ -160,6 +161,7 @@ class VRView extends BaseExoplayerView {
         if (oldTextComponent != null) {
             oldTextComponent.removeTextOutput(componentListener);
         }
+        lastReportedCues = null;
     }
 
     @Override
@@ -204,6 +206,13 @@ class VRView extends BaseExoplayerView {
     @Override
     public SubtitleView getSubtitleView() {
         return subtitleView;
+    }
+
+    @Override
+    public void applySubtitlesChanges() {
+        if (subtitleView != null && lastReportedCues != null) {
+            subtitleView.onCues(getModifiedSubtitlePosition(lastReportedCues, subtitleViewPosition));
+        }
     }
 
     @Override
@@ -274,6 +283,7 @@ class VRView extends BaseExoplayerView {
 
         @Override
         public void onCues(List<Cue> cues) {
+            lastReportedCues = cues;
             if (subtitleViewPosition != null) {
                 cues = getModifiedSubtitlePosition(cues, subtitleViewPosition);
             }
@@ -318,7 +328,7 @@ class VRView extends BaseExoplayerView {
      * @return List of modified Cues
      */
     public List<Cue> getModifiedSubtitlePosition(List<Cue> cueList, PKSubtitlePosition subtitleViewPosition) {
-        if (cueList != null && !cueList.isEmpty()) {
+        if (subtitleViewPosition != null && cueList != null && !cueList.isEmpty()) {
             List<Cue> newCueList = new ArrayList<>();
             for (Cue cue : cueList) {
                 if ((cue.line !=  Cue.DIMEN_UNSET || cue.position != Cue.DIMEN_UNSET)
@@ -345,4 +355,3 @@ class VRView extends BaseExoplayerView {
         return cueList;
     }
 }
-
