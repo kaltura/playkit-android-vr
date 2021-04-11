@@ -29,11 +29,12 @@ tasks.withType(Javadoc) {
 }
 
 dependencies {
+
     implementation 'com.kaltura:playkit-android:dev-SNAPSHOT'
     //implementation project(":playkit")
 
     //implementation 'com.kaltura:MD360Player4Android:master'
-    implementation 'com.kaltura.playkit:md360player:1.0.4'
+    implementation 'com.kaltura.playkit:md360player:1.0.7'
     //implementation project(":MD360")
 
     //implementation 'com.kaltura:MD360Player4Android:14b41da5e63d463c27fe9071a78e0ac2e4ec2013'
@@ -42,12 +43,15 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     androidTestImplementation('androidx.test.espresso:espresso-core:3.3.0')
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.2'
 }
 
 repositories {
   google()
   jcenter()
+  mavenCentral()
   maven { url "https://dl.bintray.com/kaltura/android" }
   maven { url "https://jitpack.io" }
 }
+
+apply from: './gradle-mvn-push.gradle'

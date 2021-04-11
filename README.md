@@ -1,5 +1,5 @@
 [![CI Status](https://travis-ci.org/kaltura/playkit-android-vr.svg?branch=develop)](https://travis-ci.org/kaltura/playkit-android-vr)
-[ ![Download](https://api.bintray.com/packages/kaltura/android/vrplugin/images/download.svg) ](https://bintray.com/kaltura/android/vrplugin/_latestVersion)
+[![Download](https://img.shields.io/maven-central/v/com.kaltura.playkit/vrplugin?label=Download)](https://search.maven.org/artifact/com.kaltura.playkit/vrplugin)
 [![License](https://img.shields.io/badge/license-AGPLv3-black.svg)](https://github.com/kaltura/playkit-android-vr/blob/master/LICENSE)
 ![Android](https://img.shields.io/badge/platform-android-green.svg)
 
