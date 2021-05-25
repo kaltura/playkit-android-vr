@@ -16,11 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.kaltura.android.exoplayer2.ExoPlayer;
 import com.kaltura.android.exoplayer2.Player;
 import com.kaltura.android.exoplayer2.text.Cue;
 import com.kaltura.android.exoplayer2.text.TextOutput;
 import com.kaltura.android.exoplayer2.ui.AspectRatioFrameLayout;
-import com.kaltura.android.exoplayer2.video.VideoListener;
+import com.kaltura.android.exoplayer2.video.VideoSize;
 import com.kaltura.playkit.PKLog;
 import com.kaltura.android.exoplayer2.SimpleExoPlayer;
 import com.kaltura.android.exoplayer2.ui.SubtitleView;
@@ -40,7 +41,7 @@ class VRView extends BaseExoplayerView {
 
     private SimpleExoPlayer player;
     private ComponentListener componentListener;
-    private Player.EventListener playerEventListener;
+    private Player.Listener playerEventListener;
 
     private GLSurfaceView surface;
     private List<Cue> lastReportedCues;
@@ -64,8 +65,8 @@ class VRView extends BaseExoplayerView {
         initPosterView();
     }
 
-    private Player.EventListener getPlayerEventListener() {
-        return new Player.EventListener() {
+    private Player.Listener getPlayerEventListener() {
+        return new Player.Listener() {
             @Override
             public void onPlaybackStateChanged(int playbackState) {
                 switch (playbackState) {
@@ -138,11 +139,11 @@ class VRView extends BaseExoplayerView {
     private void addVideoSurface(boolean isSurfaceSecured) {
         resetViews();
 
-        Player.TextComponent newTextComponent = player.getTextComponent();
+        ExoPlayer.TextComponent newTextComponent = player.getTextComponent();
         player.addListener(playerEventListener);
 
         if (newTextComponent != null) {
-            newTextComponent.addTextOutput(componentListener);
+            player.addListener(componentListener);
         }
 
         surface.setSecure(isSurfaceSecured);
@@ -156,13 +157,13 @@ class VRView extends BaseExoplayerView {
      * Clear all the listeners and detach Surface from view hierarchy.
      */
     private void removeVideoSurface() {
-        Player.TextComponent oldTextComponent = player.getTextComponent();
+        ExoPlayer.TextComponent oldTextComponent = player.getTextComponent();
         if (playerEventListener != null) {
             player.removeListener(playerEventListener);
         }
 
         if (oldTextComponent != null) {
-            oldTextComponent.removeTextOutput(componentListener);
+            player.removeTextOutput(componentListener);
         }
         lastReportedCues = null;
     }
@@ -282,7 +283,7 @@ class VRView extends BaseExoplayerView {
     /**
      * Local listener implementation.
      */
-    private final class ComponentListener implements TextOutput, VideoListener, OnLayoutChangeListener {
+    private final class ComponentListener implements TextOutput, Player.Listener, OnLayoutChangeListener {
 
         @Override
         public void onCues(List<Cue> cues) {
@@ -297,7 +298,7 @@ class VRView extends BaseExoplayerView {
         }
 
         @Override
-        public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+        public void onVideoSizeChanged(VideoSize videoSize) {
 
         }
 
