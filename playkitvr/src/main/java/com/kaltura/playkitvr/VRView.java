@@ -31,6 +31,7 @@ import com.kaltura.playkit.player.PKSubtitlePosition;
 import java.util.ArrayList;
 import java.util.List;
 
+
 class VRView extends BaseExoplayerView {
 
     private static final PKLog log = PKLog.get("VRView");
