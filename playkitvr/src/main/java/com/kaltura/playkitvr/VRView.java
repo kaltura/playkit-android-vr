@@ -163,7 +163,7 @@ class VRView extends BaseExoplayerView {
         }
 
         if (oldTextComponent != null) {
-            player.removeTextOutput(componentListener);
+            player.removeListener(componentListener);
         }
         lastReportedCues = null;
     }
