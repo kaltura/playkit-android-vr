@@ -129,10 +129,12 @@ public class VRControllerImpl implements VRController {
 
     void load(VRSettings vrSettings) {
         if(!onApplicationPaused) {
-            enableVRMode(vrSettings.isVrModeEnabled());
-            setFlingEnabled(vrSettings.isFlingEnabled());
-            setInteractionMode(vrSettings.getInteractionMode());
-            setZoomWithPinchEnabled(vrSettings.isZoomWithPinchEnabled());
+            if (vrSettings != null) {
+                enableVRMode(vrSettings.isVrModeEnabled());
+                setFlingEnabled(vrSettings.isFlingEnabled());
+                setInteractionMode(vrSettings.getInteractionMode());
+                setZoomWithPinchEnabled(vrSettings.isZoomWithPinchEnabled());
+            }
             onApplicationPaused = false;
         }
     }
