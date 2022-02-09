@@ -39,7 +39,7 @@ class VRView extends BaseExoplayerView {
     private PKSubtitlePosition subtitleViewPosition;
     private AspectRatioFrameLayout contentFrame;
 
-    private SimpleExoPlayer player;
+    private ExoPlayer player;
     private ComponentListener componentListener;
     private Player.Listener playerEventListener;
 
@@ -100,11 +100,11 @@ class VRView extends BaseExoplayerView {
      * Set the {@link SimpleExoPlayer} to use. If ExoplayerView instance already has
      * player attached to it, it will remove and clear videoSurface first.
      *
-     * @param player           - The {@link SimpleExoPlayer} to use.
+     * @param player           - The {@link ExoPlayer} to use.
      * @param isSurfaceSecured - should allow secure rendering of the surface
      */
     @Override
-    public void setPlayer(SimpleExoPlayer player, boolean useTextureView, boolean isSurfaceSecured, boolean hideVideoViews) {
+    public void setPlayer(ExoPlayer player, boolean useTextureView, boolean isSurfaceSecured, boolean hideVideoViews) {
         if (this.player == player) {
             return;
         }
