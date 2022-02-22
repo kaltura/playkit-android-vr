@@ -97,7 +97,7 @@ class VRView extends BaseExoplayerView {
     }
 
     /**
-     * Set the {@link SimpleExoPlayer} to use. If ExoplayerView instance already has
+     * Set the {@link ExoPlayer} to use. If ExoplayerView instance already has
      * player attached to it, it will remove and clear videoSurface first.
      *
      * @param player           - The {@link ExoPlayer} to use.
@@ -139,12 +139,8 @@ class VRView extends BaseExoplayerView {
     private void addVideoSurface(boolean isSurfaceSecured) {
         resetViews();
 
-        ExoPlayer.TextComponent newTextComponent = player.getTextComponent();
         player.addListener(playerEventListener);
-
-        if (newTextComponent != null) {
-            player.addListener(componentListener);
-        }
+        player.addListener(componentListener);
 
         surface.setSecure(isSurfaceSecured);
 
@@ -157,14 +153,14 @@ class VRView extends BaseExoplayerView {
      * Clear all the listeners and detach Surface from view hierarchy.
      */
     private void removeVideoSurface() {
-        ExoPlayer.TextComponent oldTextComponent = player.getTextComponent();
         if (playerEventListener != null) {
             player.removeListener(playerEventListener);
         }
 
-        if (oldTextComponent != null) {
+        if (componentListener != null) {
             player.removeListener(componentListener);
         }
+
         lastReportedCues = null;
     }
 
