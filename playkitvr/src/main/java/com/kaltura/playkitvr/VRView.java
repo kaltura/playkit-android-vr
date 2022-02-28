@@ -115,6 +115,7 @@ class VRView extends BaseExoplayerView {
         this.player = player;
         addVideoSurface(isSurfaceSecured);
     }
+    
 
     /**
      * Swap the video surface view that player should render.
