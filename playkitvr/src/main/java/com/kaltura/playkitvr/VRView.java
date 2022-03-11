@@ -23,7 +23,6 @@ import com.kaltura.android.exoplayer2.text.TextOutput;
 import com.kaltura.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.kaltura.android.exoplayer2.video.VideoSize;
 import com.kaltura.playkit.PKLog;
-import com.kaltura.android.exoplayer2.SimpleExoPlayer;
 import com.kaltura.android.exoplayer2.ui.SubtitleView;
 import com.kaltura.playkit.player.BaseExoplayerView;
 import com.kaltura.playkit.player.PKSubtitlePosition;
