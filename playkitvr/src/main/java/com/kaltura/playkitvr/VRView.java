@@ -319,7 +319,7 @@ class VRView extends BaseExoplayerView {
     }
 
     /**
-     * Creates new cue configuration if `isIgnoreCueSettings` is set to true by application
+     * Creates new cue configuration if `isOverrideInlineCueConfig` is set to true by application
      * Checks if the application wants to ignore the in-stream CueSettings otherwise goes with existing Cue configuration
      *
      * @param cueList cue list coming in stream
@@ -335,16 +335,16 @@ class VRView extends BaseExoplayerView {
                     newCueList.add(cue);
                     continue;
                 }
+
                 CharSequence text = cue.text;
                 if (text != null) {
-                    Cue newCue = new Cue.Builder().
-                            setText(text).
-                            setTextAlignment(subtitleViewPosition.getSubtitleHorizontalPosition()).
-                            setLine(subtitleViewPosition.getVerticalPositionPercentage(), subtitleViewPosition.getLineType()).
-                            setLineAnchor(cue.lineAnchor).
-                            setPosition(cue.position).
-                            setPositionAnchor(cue.positionAnchor).
-                            setSize(subtitleViewPosition.getHorizontalPositionPercentage()).build();
+                    Cue newCue = new Cue.Builder()
+                            .setText(text)
+                            .setTextAlignment(subtitleViewPosition.getSubtitleHorizontalPosition())
+                            .setLine(subtitleViewPosition.getVerticalPositionPercentage(), subtitleViewPosition.getLineType())
+                            .setSize(subtitleViewPosition.getHorizontalPositionPercentage())
+                            .build();
+
                     newCueList.add(newCue);
                 }
             }
