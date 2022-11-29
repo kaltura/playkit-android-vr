@@ -19,6 +19,7 @@ import android.widget.FrameLayout;
 import com.kaltura.android.exoplayer2.ExoPlayer;
 import com.kaltura.android.exoplayer2.Player;
 import com.kaltura.android.exoplayer2.text.Cue;
+import com.kaltura.android.exoplayer2.text.CueGroup;
 import com.kaltura.android.exoplayer2.text.TextOutput;
 import com.kaltura.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.kaltura.android.exoplayer2.video.VideoSize;
@@ -29,6 +30,8 @@ import com.kaltura.playkit.player.PKSubtitlePosition;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nonnull;
 
 class VRView extends BaseExoplayerView {
 
@@ -43,7 +46,7 @@ class VRView extends BaseExoplayerView {
     private Player.Listener playerEventListener;
 
     private GLSurfaceView surface;
-    private List<Cue> lastReportedCues;
+    private CueGroup lastReportedCueGroup;
 
     VRView(Context context) {
         this(context, null);
@@ -160,7 +163,7 @@ class VRView extends BaseExoplayerView {
             player.removeListener(componentListener);
         }
 
-        lastReportedCues = null;
+        lastReportedCueGroup = null;
     }
 
     @Override
@@ -209,8 +212,8 @@ class VRView extends BaseExoplayerView {
 
     @Override
     public void applySubtitlesChanges() {
-        if (subtitleView != null && lastReportedCues != null) {
-            subtitleView.onCues(getModifiedSubtitlePosition(lastReportedCues, subtitleViewPosition));
+        if (subtitleView != null && lastReportedCueGroup != null) {
+            subtitleView.setCues(getModifiedSubtitlePosition(lastReportedCueGroup, subtitleViewPosition));
         }
     }
 
@@ -278,17 +281,18 @@ class VRView extends BaseExoplayerView {
     /**
      * Local listener implementation.
      */
-    private final class ComponentListener implements TextOutput, Player.Listener, OnLayoutChangeListener {
+    private final class ComponentListener implements Player.Listener, OnLayoutChangeListener {
 
         @Override
-        public void onCues(List<Cue> cues) {
-            lastReportedCues = cues;
+        public void onCues(@Nonnull CueGroup cueGroup) {
+            lastReportedCueGroup = cueGroup;
+            List<Cue> cueList = null;
             if (subtitleViewPosition != null) {
-                cues = getModifiedSubtitlePosition(cues, subtitleViewPosition);
+                cueList = getModifiedSubtitlePosition(cueGroup, subtitleViewPosition);
             }
 
-            if (subtitleView != null) {
-                subtitleView.onCues(cues);
+            if (subtitleView != null && cueList != null && !cueList.isEmpty()) {
+                subtitleView.setCues(cueList);
             }
         }
 
@@ -322,12 +326,13 @@ class VRView extends BaseExoplayerView {
      * Creates new cue configuration if `isOverrideInlineCueConfig` is set to true by application
      * Checks if the application wants to ignore the in-stream CueSettings otherwise goes with existing Cue configuration
      *
-     * @param cueList cue list coming in stream
+     * @param cueGroup CueGroup containing cue list coming in stream
      * @param subtitleViewPosition subtitle view position configuration set by application
      * @return List of modified Cues
      */
-    public List<Cue> getModifiedSubtitlePosition(List<Cue> cueList, PKSubtitlePosition subtitleViewPosition) {
-        if (subtitleViewPosition != null && cueList != null && !cueList.isEmpty()) {
+    public List<Cue> getModifiedSubtitlePosition(CueGroup cueGroup, PKSubtitlePosition subtitleViewPosition) {
+        List<Cue> cueList = cueGroup.cues;
+        if (subtitleViewPosition != null && !cueList.isEmpty()) {
             List<Cue> newCueList = new ArrayList<>();
             for (Cue cue : cueList) {
                 if (!subtitleViewPosition.isOverrideInlineCueConfig()) {
