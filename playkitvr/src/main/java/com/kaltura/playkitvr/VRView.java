@@ -45,7 +45,7 @@ class VRView extends BaseExoplayerView {
     private Player.Listener playerEventListener;
 
     private GLSurfaceView surface;
-    private CueGroup lastReportedCueGroup;
+    private List<Cue> lastReportedCues;
 
     VRView(Context context) {
         this(context, null);
@@ -162,7 +162,7 @@ class VRView extends BaseExoplayerView {
             player.removeListener(componentListener);
         }
 
-        lastReportedCueGroup = null;
+        lastReportedCues = null;
     }
 
     @Override
@@ -211,8 +211,8 @@ class VRView extends BaseExoplayerView {
 
     @Override
     public void applySubtitlesChanges() {
-        if (subtitleView != null && lastReportedCueGroup != null) {
-            subtitleView.setCues(getModifiedSubtitlePosition(lastReportedCueGroup, subtitleViewPosition));
+        if (subtitleView != null && lastReportedCues != null) {
+            subtitleView.setCues(getModifiedSubtitlePosition(lastReportedCues, subtitleViewPosition));
         }
     }
 
@@ -284,14 +284,14 @@ class VRView extends BaseExoplayerView {
 
         @Override
         public void onCues(@Nonnull CueGroup cueGroup) {
-            lastReportedCueGroup = cueGroup;
+            lastReportedCues = cueGroup.cues;
             List<Cue> cueList = null;
             if (subtitleViewPosition != null) {
-                cueList = getModifiedSubtitlePosition(cueGroup, subtitleViewPosition);
+                cueList = getModifiedSubtitlePosition(lastReportedCues, subtitleViewPosition);
             }
 
-            if (subtitleView != null && cueList != null && !cueList.isEmpty()) {
-                subtitleView.setCues(cueList);
+            if (subtitleView != null) {
+                subtitleView.setCues((cueList != null && !cueList.isEmpty()) ? cueList : lastReportedCues);
             }
         }
 
@@ -325,13 +325,12 @@ class VRView extends BaseExoplayerView {
      * Creates new cue configuration if `isOverrideInlineCueConfig` is set to true by application
      * Checks if the application wants to ignore the in-stream CueSettings otherwise goes with existing Cue configuration
      *
-     * @param cueGroup CueGroup containing cue list coming in stream
+     * @param cueList cue list coming in stream
      * @param subtitleViewPosition subtitle view position configuration set by application
      * @return List of modified Cues
      */
-    public List<Cue> getModifiedSubtitlePosition(CueGroup cueGroup, PKSubtitlePosition subtitleViewPosition) {
-        List<Cue> cueList = cueGroup.cues;
-        if (subtitleViewPosition != null && !cueList.isEmpty()) {
+    public List<Cue> getModifiedSubtitlePosition(List<Cue> cueList, PKSubtitlePosition subtitleViewPosition) {
+        if (subtitleViewPosition != null && cueList != null && !cueList.isEmpty()) {
             List<Cue> newCueList = new ArrayList<>();
             for (Cue cue : cueList) {
                 if (!subtitleViewPosition.isOverrideInlineCueConfig()) {
