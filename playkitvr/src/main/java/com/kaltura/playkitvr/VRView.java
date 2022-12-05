@@ -131,6 +131,7 @@ class VRView extends BaseExoplayerView {
         }
     }
 
+    
     /**
      * Create and set relevant surface and listeners to player and attach Surface to the view hierarchy.
      *
