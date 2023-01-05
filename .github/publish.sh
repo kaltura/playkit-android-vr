@@ -38,7 +38,7 @@ set_version() {
     # Changing the version in build.gradle file
     if [[ "$RELEASE_TYPE" == "Patch" || "$RELEASE_TYPE" == "Update" ]]; then
        echo "RELEASE_TYPE = '$RELEASE_TYPE'"
-       perl -pi -e "s/playkit:playkit:$PLAYKIT_PREV_VERSION/playkit:playkit:$PLAYKIT_DEP_VERSION/" $BUILD_GRADLE
+       perl -pi -e "s/playkit:playkit:$PLAYKIT_PREV_VERSION/playkit:playkit:$NEW_VERSION/" $BUILD_GRADLE
     fi
 
     if [ "$RELEASE_TYPE" == "Full" ]; then
