@@ -32,9 +32,10 @@ checkout() {
 set_version() {
     echo Setting version of "$REPO_NAME" to "$NEW_VERSION"
 
+    # Changing the version in version.gradle file
     perl -pi -e "s/^ext.libVersion.*$/ext.libVersion = '$NEW_VERSION'/" $VERSION_FILE
 
-    # Changing the version in version.gradle file
+    # Changing the version in build.gradle file
     if [[ "$RELEASE_TYPE" == "Patch" || "$RELEASE_TYPE" == "Update" ]]; then
        echo "RELEASE_TYPE = '$RELEASE_TYPE'"
        perl -pi -e "s/playkit:playkit:$PLAYKIT_PREV_VERSION/playkit:playkit:$PLAYKIT_DEP_VERSION/" $BUILD_GRADLE
