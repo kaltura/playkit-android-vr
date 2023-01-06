@@ -1,4 +1,4 @@
-[![CI Status](https://travis-ci.org/kaltura/playkit-android-vr.svg?branch=develop)](https://travis-ci.org/kaltura/playkit-android-vr)
+[![CI Status](https://github.com/kaltura/playkit-android-vr/actions/workflows/build.yml/badge.svg)](https://github.com/kaltura/playkit-android-vr/actions/workflows/build.yml)
 [![Download](https://img.shields.io/maven-central/v/com.kaltura.playkit/vrplugin?label=Download)](https://search.maven.org/artifact/com.kaltura.playkit/vrplugin)
 [![License](https://img.shields.io/badge/license-AGPLv3-black.svg)](https://github.com/kaltura/playkit-android-vr/blob/master/LICENSE)
 ![Android](https://img.shields.io/badge/platform-android-green.svg)
@@ -27,12 +27,12 @@ repositories {
 
 Next, lets see how to use the VR Module in your application.
 
-There are 2 possibilites to Generate PKMeidaEntry
+There are 2 possibilities to Generate PKMediaEntry
 * Using Providers (OVP/Phoenix)
-* Creating it manualy
+* Creating it manually
 
-VR Module can work in 2 Modes 360 Player or Cardbord Player Mode
-for each mode application can cofigure the IntractionMode for each Player.
+VR Module can work in 2 Modes 360 Player or Cardboard Player Mode
+for each mode application can configure the InteractionMode for each Player.
 The default InteractionMode is VRInteractionMode.Touch
 
 ```java 
