@@ -16,6 +16,9 @@ import com.kaltura.playkit.player.vr.VRInteractionMode;
 import com.kaltura.playkit.player.vr.VRSettings;
 import com.kaltura.playkit.utils.Consts;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class DefaultVRPlayerWrapper extends PlayerEngineWrapper {
 
     private PKLog log = PKLog.get(DefaultVRPlayerWrapper.class.getSimpleName());
@@ -24,10 +27,12 @@ class DefaultVRPlayerWrapper extends PlayerEngineWrapper {
     private MDVRLibrary vrLib;
     private Surface videoSurface;
     private VRControllerImpl vrController;
+    private float barrelDistortionScale;
 
-    DefaultVRPlayerWrapper(final Context context, PlayerEngine player) {
+    DefaultVRPlayerWrapper(final Context context, PlayerEngine player, @Nullable VRSettings vrSettings) {
         this.context = context;
         this.playerEngine = player;
+        barrelDistortionScale = extractBarrelDistortionScale(vrSettings);
         vrLib = createVRLibrary();
         vrLib.onResume(context);
         this.vrController = new VRControllerImpl(context, vrLib);
@@ -55,8 +60,16 @@ class DefaultVRPlayerWrapper extends PlayerEngineWrapper {
                     }
                 })
                 .interactiveMode(MDVRLibrary.INTERACTIVE_MODE_TOUCH)
-                .barrelDistortionConfig(new BarrelDistortionConfig().setDefaultEnabled(false).setScale(0.95f))
+                .barrelDistortionConfig(new BarrelDistortionConfig().setDefaultEnabled(false).setScale(barrelDistortionScale))
                 .build(((VRView) playerEngine.getView()).getGlSurface());
+    }
+
+    @Nonnull
+    private Float extractBarrelDistortionScale(@Nullable VRSettings vrSettings) {
+        if (vrSettings != null) {
+            return vrSettings.getBarrelDistortionScale();
+        }
+        return VRSettings.DEFAULT_BARREL_DISTORTION_SCALE;
     }
 
     @Override
