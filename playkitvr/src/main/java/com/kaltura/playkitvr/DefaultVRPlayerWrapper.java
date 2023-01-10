@@ -12,6 +12,7 @@ import com.kaltura.playkit.PlayerEngineWrapper;
 import com.kaltura.playkit.player.PKMediaSourceConfig;
 import com.kaltura.playkit.player.PlayerEngine;
 import com.kaltura.playkit.player.PlayerView;
+import com.kaltura.playkit.player.vr.VRBarrelDistortionConfig;
 import com.kaltura.playkit.player.vr.VRInteractionMode;
 import com.kaltura.playkit.player.vr.VRSettings;
 import com.kaltura.playkit.utils.Consts;
@@ -27,12 +28,12 @@ class DefaultVRPlayerWrapper extends PlayerEngineWrapper {
     private MDVRLibrary vrLib;
     private Surface videoSurface;
     private VRControllerImpl vrController;
-    private float barrelDistortionScale;
+    private BarrelDistortionConfig barrelDistortionConfig;
 
     DefaultVRPlayerWrapper(final Context context, PlayerEngine player, @Nullable VRSettings vrSettings) {
         this.context = context;
         this.playerEngine = player;
-        barrelDistortionScale = extractBarrelDistortionScale(vrSettings);
+        barrelDistortionConfig = extractBarrelDistortionConfig(vrSettings);
         vrLib = createVRLibrary();
         vrLib.onResume(context);
         this.vrController = new VRControllerImpl(context, vrLib);
@@ -60,16 +61,25 @@ class DefaultVRPlayerWrapper extends PlayerEngineWrapper {
                     }
                 })
                 .interactiveMode(MDVRLibrary.INTERACTIVE_MODE_TOUCH)
-                .barrelDistortionConfig(new BarrelDistortionConfig().setDefaultEnabled(false).setScale(barrelDistortionScale))
+                .barrelDistortionConfig(barrelDistortionConfig)
                 .build(((VRView) playerEngine.getView()).getGlSurface());
     }
 
     @Nonnull
-    private Float extractBarrelDistortionScale(@Nullable VRSettings vrSettings) {
+    private BarrelDistortionConfig extractBarrelDistortionConfig(@Nullable VRSettings vrSettings) {
         if (vrSettings != null) {
-            return vrSettings.getBarrelDistortionScale();
+            VRBarrelDistortionConfig vrBarrelDistortionConfig = vrSettings.getVrBarrelDistortionConfig();
+            if (vrBarrelDistortionConfig != null) {
+                return new BarrelDistortionConfig()
+                        .setParamA(vrBarrelDistortionConfig.getParamA())
+                        .setParamB(vrBarrelDistortionConfig.getParamB())
+                        .setParamC(vrBarrelDistortionConfig.getParamC())
+                        .setDefaultEnabled(vrBarrelDistortionConfig.getDefaultEnabled())
+                        .setScale(vrBarrelDistortionConfig.getScale());
+            }
         }
-        return VRSettings.DEFAULT_BARREL_DISTORTION_SCALE;
+
+        return new BarrelDistortionConfig().setDefaultEnabled(false).setScale(VRBarrelDistortionConfig.DEFAULT_BARREL_DISTORTION_SCALE);
     }
 
     @Override
