@@ -12,9 +12,13 @@ import com.kaltura.playkit.PlayerEngineWrapper;
 import com.kaltura.playkit.player.PKMediaSourceConfig;
 import com.kaltura.playkit.player.PlayerEngine;
 import com.kaltura.playkit.player.PlayerView;
+import com.kaltura.playkit.player.vr.VRDistortionConfig;
 import com.kaltura.playkit.player.vr.VRInteractionMode;
 import com.kaltura.playkit.player.vr.VRSettings;
 import com.kaltura.playkit.utils.Consts;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 class DefaultVRPlayerWrapper extends PlayerEngineWrapper {
 
@@ -24,10 +28,12 @@ class DefaultVRPlayerWrapper extends PlayerEngineWrapper {
     private MDVRLibrary vrLib;
     private Surface videoSurface;
     private VRControllerImpl vrController;
+    private BarrelDistortionConfig barrelDistortionConfig;
 
-    DefaultVRPlayerWrapper(final Context context, PlayerEngine player) {
+    DefaultVRPlayerWrapper(final Context context, PlayerEngine player, @Nullable VRSettings vrSettings) {
         this.context = context;
         this.playerEngine = player;
+        barrelDistortionConfig = extractBarrelDistortionConfig(vrSettings);
         vrLib = createVRLibrary();
         vrLib.onResume(context);
         this.vrController = new VRControllerImpl(context, vrLib);
@@ -55,8 +61,58 @@ class DefaultVRPlayerWrapper extends PlayerEngineWrapper {
                     }
                 })
                 .interactiveMode(MDVRLibrary.INTERACTIVE_MODE_TOUCH)
-                .barrelDistortionConfig(new BarrelDistortionConfig().setDefaultEnabled(false).setScale(0.95f))
+                .barrelDistortionConfig(barrelDistortionConfig)
                 .build(((VRView) playerEngine.getView()).getGlSurface());
+    }
+
+    @Nonnull
+    private BarrelDistortionConfig extractBarrelDistortionConfig(@Nullable VRSettings vrSettings) {
+        if (vrSettings != null) {
+            VRDistortionConfig vrDistortionConfig = vrSettings.getVrDistortionConfig();
+            if (vrDistortionConfig != null) {
+                return new BarrelDistortionConfig()
+                        .setParamA(isDistortionParamInRange(vrDistortionConfig.getParamA()) ?
+                                vrDistortionConfig.getParamA() :
+                                VRDistortionConfig.DEFAULT_PARAM_A)
+
+                        .setParamB(isDistortionParamInRange(vrDistortionConfig.getParamB()) ?
+                                vrDistortionConfig.getParamB() :
+                                VRDistortionConfig.DEFAULT_PARAM_B)
+
+                        .setParamC(isDistortionParamInRange(vrDistortionConfig.getParamC()) ?
+                                vrDistortionConfig.getParamC() :
+                                VRDistortionConfig.DEFAULT_PARAM_C)
+
+                        .setDefaultEnabled(vrDistortionConfig.getDefaultEnabled())
+                        .setScale(getDistortionScale(vrDistortionConfig.getScale()));
+            }
+        }
+
+        return new BarrelDistortionConfig().setDefaultEnabled(false).setScale(VRDistortionConfig.DEFAULT_BARREL_DISTORTION_SCALE);
+    }
+
+    /**
+     * Checks the distortion scale between 0.10 to 1.0
+     * @param scale config scale
+     * @return if valid then return it else returns the default value
+     *         {#{@link VRDistortionConfig#DEFAULT_BARREL_DISTORTION_SCALE}}
+     */
+    private float getDistortionScale(Float scale) {
+        if (scale == null || scale < 0.10 || scale > 1.0) {
+            return VRDistortionConfig.DEFAULT_BARREL_DISTORTION_SCALE;
+        }
+        return scale;
+    }
+
+    /**
+     * Checks if the distortion config param is in the range of
+     * -1.0 to +1.0
+     *
+     * @param param config param
+     * @return if range or not
+     */
+    private boolean isDistortionParamInRange(Double param) {
+        return param != null && param >= -1.0 && param <= 1.0;
     }
 
     @Override
