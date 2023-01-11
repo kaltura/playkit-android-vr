@@ -98,7 +98,7 @@ class DefaultVRPlayerWrapper extends PlayerEngineWrapper {
      *         {#{@link VRDistortionConfig#DEFAULT_BARREL_DISTORTION_SCALE}}
      */
     private float getDistortionScale(Float scale) {
-        if (scale == null || (scale < 0.10 || scale > 1.0)) {
+        if (scale == null || scale < 0.10 || scale > 1.0) {
             return VRDistortionConfig.DEFAULT_BARREL_DISTORTION_SCALE;
         }
         return scale;
