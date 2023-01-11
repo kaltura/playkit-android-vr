@@ -112,7 +112,7 @@ class DefaultVRPlayerWrapper extends PlayerEngineWrapper {
      * @return if range or not
      */
     private boolean isDistortionParamInRange(Double param) {
-        return param != null && (!(param < -1.0) && !(param > 1.0));
+        return param != null && param >= -1.0 && param <= 1.0;
     }
 
     @Override
