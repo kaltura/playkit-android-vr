@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.asha.vrlib.MDVRLibrary;
 import com.asha.vrlib.model.BarrelDistortionConfig;
+import com.kaltura.androidx.media3.common.util.UnstableApi;
 import com.kaltura.playkit.PKController;
 import com.kaltura.playkit.PKLog;
 import com.kaltura.playkit.PlayerEngineWrapper;
@@ -20,6 +21,7 @@ import com.kaltura.playkit.utils.Consts;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+@UnstableApi
 class DefaultVRPlayerWrapper extends PlayerEngineWrapper {
 
     private PKLog log = PKLog.get(DefaultVRPlayerWrapper.class.getSimpleName());

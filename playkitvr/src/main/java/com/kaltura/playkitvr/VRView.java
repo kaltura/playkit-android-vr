@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.kaltura.androidx.media3.common.util.UnstableApi;
 import com.kaltura.androidx.media3.exoplayer.ExoPlayer;
 import com.kaltura.androidx.media3.common.Player;
 import com.kaltura.androidx.media3.common.text.Cue;
@@ -32,6 +33,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+@UnstableApi
 class VRView extends BaseExoplayerView {
 
     private static final PKLog log = PKLog.get("VRView");

@@ -2,14 +2,15 @@ apply plugin: 'com.android.library'
 apply from: 'version.gradle'
 
 android {
-    compileSdkVersion 33
+    namespace 'com.kaltura.playkitvr'
+    compileSdk 34
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 33
+        minSdkVersion 21
+        targetSdkVersion 34
         versionCode 1
         versionName libVersion
 
@@ -23,6 +24,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildFeatures {
+        buildConfig = true
+    }
+    publishing {
+        publishing {
+            singleVariant('release') {
+            }
+        }
+    }
 }
 
 tasks.withType(Javadoc) {
@@ -31,7 +41,7 @@ tasks.withType(Javadoc) {
 
 dependencies {
 
-    implementation 'com.kaltura:playkit-android:dev-SNAPSHOT'
+    implementation 'com.kaltura:playkit-android:KUX-1761-SNAPSHOT'
     //implementation project(":playkit")
 
     //implementation 'com.kaltura:MD360Player4Android:master'
