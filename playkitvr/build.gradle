@@ -31,7 +31,7 @@ tasks.withType(Javadoc) {
 
 dependencies {
 
-    implementation 'com.kaltura:playkit-android:dev-SNAPSHOT'
+    implementation 'com.kaltura:playkit-android:no_vcodec_reuse-SNAPSHOT'
     //implementation project(":playkit")
 
     //implementation 'com.kaltura:MD360Player4Android:master'
