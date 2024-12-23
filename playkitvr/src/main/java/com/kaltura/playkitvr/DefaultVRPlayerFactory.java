@@ -2,6 +2,7 @@ package com.kaltura.playkitvr;
 
 import android.content.Context;
 
+import com.kaltura.androidx.media3.common.util.UnstableApi;
 import com.kaltura.playkit.player.BaseExoplayerView;
 import com.kaltura.playkit.player.PlayerEngine;
 import com.kaltura.playkit.player.vr.VRPlayerFactory;
@@ -13,6 +14,7 @@ import javax.annotation.Nullable;
  * Created by anton.afanasiev on 23/07/2017.
  */
 
+@UnstableApi
 public class DefaultVRPlayerFactory implements VRPlayerFactory {
 
     @Override

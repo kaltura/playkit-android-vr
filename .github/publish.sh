@@ -43,7 +43,7 @@ set_version() {
 
     if [ "$RELEASE_TYPE" == "Full" ]; then
        echo "RELEASE_TYPE = '$RELEASE_TYPE'"
-       perl -pi -e "s/:playkit-android:dev-SNAPSHOT/.playkit:playkit:$NEW_VERSION/" $BUILD_GRADLE
+       perl -pi -e "s/:playkit-android:.*?-SNAPSHOT/.playkit:playkit:$NEW_VERSION/" $BUILD_GRADLE
     fi
 }
 
