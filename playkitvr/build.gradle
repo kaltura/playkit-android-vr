@@ -41,7 +41,7 @@ tasks.withType(Javadoc) {
 
 dependencies {
 
-    implementation 'com.kaltura:playkit-android:KUX-1761-SNAPSHOT'
+    implementation 'com.kaltura.playkit:playkit:5.0.0'
     //implementation project(":playkit")
 
     //implementation 'com.kaltura:MD360Player4Android:master'
