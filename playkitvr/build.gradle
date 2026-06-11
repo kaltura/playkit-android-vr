@@ -41,7 +41,7 @@ tasks.withType(Javadoc) {
 
 dependencies {
 
-    implementation 'com.github.kaltura:playkit-android:dev-SNAPSHOT'
+    implementation 'com.github.kaltura:playkit-android:PLAYEROTT-66-SNAPSHOT'
     //implementation project(":playkit")
 
     //implementation 'com.kaltura:MD360Player4Android:master'
